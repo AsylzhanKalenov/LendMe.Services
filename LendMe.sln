@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lendme.Web", "src\Monolithic\Lendme.Web\Lendme.Web.csproj", "{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3A7142BE-0B2E-4182-A59E-19B5070728CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lendme.Core", "src\Monolithic\Lendme.Core\Lendme.Core.csproj", "{1A1315B0-AC1B-42CC-AFDC-17AC9DB07313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lendme.Infrastructure", "src\Monolithic\Lendme.Infrastructure\Lendme.Infrastructure.csproj", "{6ABF4B5C-DBE0-45CA-B4EA-43F3E497A667}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A1315B0-AC1B-42CC-AFDC-17AC9DB07313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A1315B0-AC1B-42CC-AFDC-17AC9DB07313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A1315B0-AC1B-42CC-AFDC-17AC9DB07313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A1315B0-AC1B-42CC-AFDC-17AC9DB07313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ABF4B5C-DBE0-45CA-B4EA-43F3E497A667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ABF4B5C-DBE0-45CA-B4EA-43F3E497A667}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ABF4B5C-DBE0-45CA-B4EA-43F3E497A667}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ABF4B5C-DBE0-45CA-B4EA-43F3E497A667}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3} = {3A7142BE-0B2E-4182-A59E-19B5070728CC}
+		{1A1315B0-AC1B-42CC-AFDC-17AC9DB07313} = {3A7142BE-0B2E-4182-A59E-19B5070728CC}
+		{6ABF4B5C-DBE0-45CA-B4EA-43F3E497A667} = {3A7142BE-0B2E-4182-A59E-19B5070728CC}
+	EndGlobalSection
+EndGlobal
