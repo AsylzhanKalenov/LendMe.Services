@@ -1,4 +1,4 @@
-﻿namespace Lendme.Core.Entities;
+﻿namespace Lendme.Core.Entities.Catalog;
 
 public class Location
 {
