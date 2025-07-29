@@ -28,14 +28,46 @@ public class Notification
 }
 
 // Enums
+// Enums
 public enum NotificationType 
 { 
-    BookingRequest, BookingConfirmed, BookingCancelled,
-    PaymentReceived, PaymentFailed, 
-    MessageReceived, ReviewReceived,
-    ItemAvailable, PriceChanged,
-    VerificationRequired, SecurityAlert
+    // Booking related
+    BookingRequest, 
+    BookingConfirmed, 
+    BookingCancelled,
+    BookingReminder,
+    
+    // Payment related
+    PaymentReceived, 
+    PaymentFailed,
+    PayoutCompleted,
+    
+    // Messages
+    MessageReceived,
+    
+    // Reviews
+    ReviewReceived,
+    ReviewReminder,
+    
+    // Items
+    ItemAvailable, 
+    PriceChanged,
+    ItemExpiring,
+    
+    // Verification
+    VerificationRequired, 
+    VerificationApproved,
+    
+    // Security
+    SecurityAlert,
+    LoginFromNewDevice,
+    
+    // System
+    SystemMaintenance,
+    AppUpdate,
+    PolicyUpdate
 }
 public enum NotificationChannel { Push, Email, SMS, InApp }
 public enum NotificationPriority { Low, Normal, High, Critical }
 public enum DevicePlatform { iOS, Android }
+public enum NotificationStatus { Created, Scheduled, Sent, Delivered, Failed, Expired }
