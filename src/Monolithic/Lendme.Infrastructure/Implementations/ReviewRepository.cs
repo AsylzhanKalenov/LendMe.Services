@@ -12,13 +12,22 @@ public class ReviewRepository : IReviewRepository
 
     public ReviewRepository(IMongoDatabase database)
     {
-        _collection = database.GetCollection<ReviewDocument>("products");
+        _collection = database.GetCollection<ReviewDocument>("LendmeReviews");
     }
     
-    public async Task<List<Review>> GetReviewsByItemAsync(Guid itemId)
+    public async Task<List<Review>> GetReviewsByItemAsync(string itemId)
     {
-        var documents = await _collection.Find(d => d.ItemId == itemId).ToListAsync();
-        return documents.ToEntityList();
+        try
+        {
+            Guid.TryParse(itemId.ToString(), out var id);
+            var documents = await _collection.Find(d => d.ItemId == id).ToListAsync();
+            return documents.ToEntityList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<Review?> GetReviewByIdAsync(Guid reviewId)

@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Lendme.Infrastructure;
+using Lendme.Web.Feature.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,9 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
@@ -51,5 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 app.Run();

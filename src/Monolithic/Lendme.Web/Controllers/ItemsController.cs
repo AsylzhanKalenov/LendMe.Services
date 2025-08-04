@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Lendme.Web.Controllers;
 
 [Route("api/v{version:apiVersion}/[controller]")]
+[ApiController]
 [Produces("application/json")]
-[ApiVersion("1.0")]
+[ApiVersion("1")]
 public class ItemsController : ControllerBase
 {
     // GET
@@ -21,5 +22,17 @@ public class ItemsController : ControllerBase
                 Name = "Category 1"
             }
         };
+    }
+}
+
+// Временный контроллер для тестирования
+[Route("api/test")]
+[ApiController]
+public class TestController : ControllerBase
+{
+    [HttpGet]
+    public ActionResult<string> Get()
+    {
+        return "API works!";
     }
 }

@@ -2,20 +2,33 @@
 
 public class UserPreferences
 {
+    // Primary Key для EF Core
+    public Guid Id { get; set; }
+    
+    // Foreign Key к пользователю
+    public Guid ProfileId { get; set; }
+    
     // Общие настройки
-    public GeneralPreferences General { get; set; }
+    public GeneralPreferences General { get; set; } = new();
     
     // Настройки уведомлений
-    public NotificationPreferences Notifications { get; set; }
+    public NotificationPreferences Notifications { get; set; } = new();
     
     // Настройки приватности
-    public PrivacyPreferences Privacy { get; set; }
+    public PrivacyPreferences Privacy { get; set; } = new();
     
     // Настройки для владельцев
-    public OwnerPreferences OwnerSettings { get; set; }
+    public OwnerPreferences OwnerSettings { get; set; } = new();
     
     // Настройки для арендаторов
-    public RenterPreferences RenterSettings { get; set; }
+    public RenterPreferences RenterSettings { get; set; } = new();
+    
+    // Audit fields
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    
+    // Navigation property (если есть User entity)
+    public UserProfile Profile { get; set; }
 }
 
 public class GeneralPreferences
