@@ -9,4 +9,22 @@ public class RentalTerms
     public bool RequiresDeposit { get; set; }
     public bool RequiresInsurance { get; set; }
     public List<string> RestrictedUses { get; set; }
+    
+    public RentalTerms(
+        string pickupInstructions,
+        string usageGuidelines,
+        List<string> includedAccessories,
+        string cancellationPolicy,
+        bool requiresDeposit,
+        bool requiresInsurance,
+        List<string> restrictedUses)
+    {
+        PickupInstructions = pickupInstructions;
+        UsageGuidelines = usageGuidelines;
+        IncludedAccessories = includedAccessories ?? new List<string>();
+        CancellationPolicy = cancellationPolicy;
+        RequiresDeposit = requiresDeposit;
+        RequiresInsurance = requiresInsurance;
+        RestrictedUses = restrictedUses ?? new List<string>();
+    }
 }

@@ -10,7 +10,7 @@ using MongoDB.Driver;
 
 namespace Lendme.Infrastructure;
 
-public static class InfrastructureApplicationBuilderExtensions
+public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {

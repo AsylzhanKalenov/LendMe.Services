@@ -1,5 +1,9 @@
 ﻿using Asp.Versioning;
+using Lendme.Application.Catalog.Commands;
+using Lendme.Application.Catalog.Queries;
+using Lendme.Application.Catalog.Queries.Dto;
 using Lendme.Core.Entities.Catalog;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lendme.Web.Controllers;
@@ -10,29 +14,41 @@ namespace Lendme.Web.Controllers;
 [ApiVersion("1")]
 public class ItemsController : ControllerBase
 {
-    // GET
-    [HttpGet]
-    public ActionResult<List<Category>> Index()
+    private readonly IMediator _mediator;
+
+    public ItemsController(IMediator mediator)
     {
-        return new List<Category>()
+        _mediator = mediator;
+    }
+    
+    // GET
+    [HttpGet("categories")]
+    public ActionResult<List<CategoryDto>> CategoryList()
+    {
+        return new List<CategoryDto>()
         {
-            new Category()
+            new CategoryDto()
             {
                 Id = Guid.NewGuid(),
                 Name = "Category 1"
             }
         };
     }
-}
 
-// Временный контроллер для тестирования
-[Route("api/test")]
-[ApiController]
-public class TestController : ControllerBase
-{
-    [HttpGet]
-    public ActionResult<string> Get()
+    [HttpPost]
+    [ProducesResponseType(typeof(CreateItemResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateItem([FromBody] CreateItemCommand command)
     {
-        return "API works!";
+        var result = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetItems), new { id = result.Id }, result);
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(GetItemsResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetItems([FromQuery] GetItemsQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 }

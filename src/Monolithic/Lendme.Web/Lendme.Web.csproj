@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Lendme.Core\Lendme.Core.csproj" />
+      <ProjectReference Include="..\Lendme.Application\Lendme.Application.csproj" />
       <ProjectReference Include="..\Lendme.Infrastructure\Lendme.Infrastructure.csproj" />
     </ItemGroup>
 
