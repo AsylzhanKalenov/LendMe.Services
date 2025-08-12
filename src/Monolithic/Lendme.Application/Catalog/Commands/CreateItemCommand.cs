@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Lendme.Application.Catalog.Commands.Dto;
-using Lendme.Application.Catalog.Queries.Dto;
 using Lendme.Core.Entities.Catalog;
 using Lendme.Core.Interfaces;
 using MediatR;
