@@ -52,7 +52,7 @@ public class Item
     public void UpdateAvailability(bool isAvailable)
     {
         IsAvailable = isAvailable;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow; 
     }
 
     public void UpdateStatus(ItemStatus status)

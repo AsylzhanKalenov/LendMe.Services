@@ -45,6 +45,8 @@ public class HandoverLocation
     public Address Address { get; set; }
     public string MeetingPoint { get; set; }
     public string Instructions { get; set; }
+    public string Latitude { get; set; }
+    public string Longitude { get; set; }
     public GeoLocation Coordinates { get; set; }
 }
 
