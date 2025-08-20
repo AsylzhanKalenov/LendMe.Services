@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Lendme.Application.Booking.Dto;
-using Lendme.Core.Interfaces.Booking;
+using Lendme.Core.Interfaces.BookingRepositories;
 using MediatR;
 
 namespace Lendme.Application.Booking.Queries;
@@ -21,7 +21,7 @@ public class GetBookingQuery : IRequest<BookingDto>
         }
         public async Task<BookingDto> Handle(GetBookingQuery request, CancellationToken cancellationToken)
         {
-            var res = await _bookingRepository.GetBookingByIdAsync(request.Id);
+            var res = await _bookingRepository.GetBookingByIdAsync(request.Id, cancellationToken);
             
             return _mapper.Map<BookingDto>(res);
         }
