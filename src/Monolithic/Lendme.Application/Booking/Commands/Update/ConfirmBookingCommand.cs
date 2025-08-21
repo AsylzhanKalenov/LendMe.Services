@@ -1,6 +1,6 @@
 ﻿using Lendme.Application.Booking.Dto.Response;
 using Lendme.Core.Entities.Booking;
-using Lendme.Core.Interfaces.BookingRepositories;
+using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 using MediatR;
 
 namespace Lendme.Application.Booking.Commands.Update;

@@ -1,5 +1,6 @@
 ﻿using Lendme.Core.Entities.Catalog;
 using Lendme.Core.Interfaces;
+using Lendme.Core.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lendme.Infrastructure.SqlPersistence.Repository;

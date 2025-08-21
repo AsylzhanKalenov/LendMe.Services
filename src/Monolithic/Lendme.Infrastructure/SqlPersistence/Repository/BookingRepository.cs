@@ -1,5 +1,5 @@
 ﻿using Lendme.Core.Entities.Booking;
-using Lendme.Core.Interfaces.BookingRepositories;
+using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 
 namespace Lendme.Infrastructure.SqlPersistence.Repository;
 

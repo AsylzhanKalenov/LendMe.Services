@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Lendme.Core.Entities.ReviewService;
 using Lendme.Core.Interfaces;
+using Lendme.Core.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lendme.Web.Controllers;

@@ -2,6 +2,7 @@
 
 public class ChatParticipant
 {
+    public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public string DisplayName { get; set; }
     public string AvatarUrl { get; set; }
@@ -12,8 +13,11 @@ public class ChatParticipant
     public DateTime? LastTypingAt { get; set; }
     public bool IsTyping { get; set; }
     public int UnreadCount { get; set; }
+    public bool IsActive { get; set; } = true;
     public bool IsMuted { get; set; }
     public DateTime? MutedUntil { get; set; }
+    public Guid? LastReadMessageId { get; set; }
+    
     public ParticipantStatus Status { get; set; } // Active, Left, Blocked
     public ChatNotificationSettings NotificationSettings  { get; set; }
 }
@@ -30,7 +34,11 @@ public class ChatNotificationSettings
 
 public enum ParticipantRole
 {
-    Owner, Renter
+    Owner = 0,
+    Admin = 1,
+    Moderator = 2,
+    Renter = 3,
+    Observer = 4
 }
 
 public enum ParticipantStatus

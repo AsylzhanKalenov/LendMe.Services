@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Lendme.Application.Catalog.Queries.Dto;
 using Lendme.Core.Interfaces;
+using Lendme.Core.Interfaces.Repositories;
 using MediatR;
 
 namespace Lendme.Application.Catalog.Queries;

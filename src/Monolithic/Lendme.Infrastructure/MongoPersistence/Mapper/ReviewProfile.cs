@@ -1,7 +1,7 @@
 ﻿using Lendme.Core.Entities.ReviewService;
 using Lendme.Infrastructure.MongoPersistence.Documents.ReviewDocs;
 
-namespace Lendme.Infrastructure.MongoPersistence.Documents.Mapper;
+namespace Lendme.Infrastructure.MongoPersistence.Mapper;
 
 public static class ReviewMapper
 {

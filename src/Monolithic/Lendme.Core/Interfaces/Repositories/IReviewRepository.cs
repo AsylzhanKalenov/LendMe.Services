@@ -1,6 +1,6 @@
 ﻿using Lendme.Core.Entities.ReviewService;
 
-namespace Lendme.Core.Interfaces;
+namespace Lendme.Core.Interfaces.Repositories;
 
 public interface IReviewRepository
 {

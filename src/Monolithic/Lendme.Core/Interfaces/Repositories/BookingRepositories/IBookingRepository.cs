@@ -1,6 +1,6 @@
 ﻿using Lendme.Core.Entities.Booking;
 
-namespace Lendme.Core.Interfaces.BookingRepositories;
+namespace Lendme.Core.Interfaces.Repositories.BookingRepositories;
 
 public interface IBookingRepository
 {

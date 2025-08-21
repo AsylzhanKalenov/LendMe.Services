@@ -1,7 +1,8 @@
 ﻿using Lendme.Core.Entities.ReviewService;
 using Lendme.Core.Interfaces;
-using Lendme.Infrastructure.MongoPersistence.Documents.Mapper;
+using Lendme.Core.Interfaces.Repositories;
 using Lendme.Infrastructure.MongoPersistence.Documents.ReviewDocs;
+using Lendme.Infrastructure.MongoPersistence.Mapper;
 using MongoDB.Driver;
 
 namespace Lendme.Infrastructure.Implementations;

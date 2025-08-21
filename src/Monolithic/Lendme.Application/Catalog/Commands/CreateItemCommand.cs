@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Lendme.Core.Entities.Catalog;
 using Lendme.Core.Interfaces;
+using Lendme.Core.Interfaces.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 

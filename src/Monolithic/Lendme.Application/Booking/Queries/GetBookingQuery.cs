@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Lendme.Application.Booking.Dto;
-using Lendme.Core.Interfaces.BookingRepositories;
+using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 using MediatR;
 
 namespace Lendme.Application.Booking.Queries;

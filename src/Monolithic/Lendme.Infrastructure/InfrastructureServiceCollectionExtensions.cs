@@ -1,6 +1,9 @@
 ﻿using Lendme.Core.Interfaces;
+using Lendme.Core.Interfaces.Repositories;
+using Lendme.Core.Interfaces.Services.ChatServices;
 using Lendme.Infrastructure.Implementations;
 using Lendme.Infrastructure.MongoPersistence;
+using Lendme.Infrastructure.Services;
 using Lendme.Infrastructure.SqlPersistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +17,10 @@ public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        // Chat services
+        services.AddScoped<IChatService, MongoDbChatService>();
+        services.AddScoped<IChatNotificationService, ChatNotificationService>();
+        
         services.AddMongoDb(configuration);
         services.AddPostgreSqlDb(configuration);
         

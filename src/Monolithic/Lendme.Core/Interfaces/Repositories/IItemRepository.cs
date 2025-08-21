@@ -1,6 +1,6 @@
 ﻿using Lendme.Core.Entities.Catalog;
 
-namespace Lendme.Core.Interfaces;
+namespace Lendme.Core.Interfaces.Repositories;
 
 public interface IItemRepository
 {
