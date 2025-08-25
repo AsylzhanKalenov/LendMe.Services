@@ -1,4 +1,5 @@
 ﻿using Lendme.Core.Entities.Chat;
+using Lendme.Core.Interfaces.Services.ChatServices;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

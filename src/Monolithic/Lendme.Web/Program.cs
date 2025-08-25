@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Lendme.Infrastructure;
+using Lendme.Infrastructure.Hubs;
 using Lendme.Web.Feature.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,6 +57,8 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.UseHttpsRedirection();
 app.MapControllers();

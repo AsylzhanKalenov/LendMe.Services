@@ -18,7 +18,6 @@
 
     <ItemGroup>
       <Folder Include="Catalog\Commands\Dto\" />
-      <Folder Include="Chat\Queries\" />
     </ItemGroup>
 
 </Project>

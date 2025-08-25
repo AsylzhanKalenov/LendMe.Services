@@ -1,4 +1,5 @@
 ﻿using Lendme.Application.Chat.Dto.Response;
+using Lendme.Application.Chat.EventHandler;
 using Lendme.Core.Entities.Chat;
 using Lendme.Core.Interfaces.Services.ChatServices;
 using MediatR;
@@ -59,7 +60,7 @@ public class SendMessageCommand : IRequest<SendMessageResponse>
                 var savedMessage = await _chatService.SaveMessageAsync(message);
 
                 // Публикуем событие для отправки через SignalR
-                //await _mediator.Publish(new MessageSentEvent(savedMessage), cancellationToken);
+                await _mediator.Publish(new MessageSentEvent(savedMessage), cancellationToken);
 
                 _logger.LogInformation("Message {MessageId} sent to chat {ChatId} by user {SenderId}",
                     savedMessage.Id, request.ChatId, request.SenderId);

@@ -18,6 +18,7 @@ public class Message
     public DateTime SentAt { get; set; }
     public DateTime? EditedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
+    public bool IsDeleted { get; set; }
     
     // Доставка и прочтение
     // public List<MessageDeliveryStatus> DeliveryStatus { get; set; }
