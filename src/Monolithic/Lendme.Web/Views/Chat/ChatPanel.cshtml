@@ -14,5 +14,92 @@
 <div>
       
 </div>
+
+<script>
+    // chat-client.js
+    class ChatClient {
+        constructor() {
+            this.connection = null;
+            this.currentChatId = null;
+        }
+
+        async connect() {
+            this.connection = new signalR.HubConnectionBuilder()
+                .withUrl("/chatHub")
+                .build();
+
+            // Обработчики событий
+            this.connection.on("NewMessage", (message) => {
+                this.handleNewMessage(message);
+            });
+
+            this.connection.on("MessageUpdated", (message) => {
+                this.handleMessageUpdated(message);
+            });
+
+            this.connection.on("UserTyping", (chatId, userId, isTyping) => {
+                this.handleUserTyping(chatId, userId, isTyping);
+            });
+
+            this.connection.on("MessageRead", (chatId, messageId, userId) => {
+                this.handleMessageRead(chatId, messageId, userId);
+            });
+
+            await this.connection.start();
+        }
+
+        async joinChat(chatId) {
+            if (this.currentChatId) {
+                await this.leaveChat(this.currentChatId);
+            }
+
+            this.currentChatId = chatId;
+            await this.connection.invoke("JoinChatGroup", chatId);
+        }
+
+        async leaveChat(chatId) {
+            await this.connection.invoke("LeaveChatGroup", chatId);
+            this.currentChatId = null;
+        }
+
+        async sendTypingIndicator(isTyping) {
+            if (this.currentChatId) {
+                await this.connection.invoke("SendTypingIndicator", this.currentChatId, isTyping);
+            }
+        }
+
+        async markMessageAsRead(messageId) {
+            if (this.currentChatId) {
+                await this.connection.invoke("MarkMessageAsRead", this.currentChatId, messageId);
+            }
+        }
+
+        // Обработчики событий
+        handleNewMessage(message) {
+            console.log("New message:", message);
+            // Добавить сообщение в UI
+        }
+
+        handleMessageUpdated(message) {
+            console.log("Message updated:", message);
+            // Обновить сообщение в UI
+        }
+
+        handleUserTyping(chatId, userId, isTyping) {
+            console.log(`User ${userId} is ${isTyping ? 'typing' : 'stopped typing'}`);
+            // Показать/скрыть индикатор набора текста
+        }
+
+        handleMessageRead(chatId, messageId, userId) {
+            console.log(`Message ${messageId} read by user ${userId}`);
+            // Обновить статус прочтения сообщения
+        }
+    }
+
+    // Использование
+    const chatClient = new ChatClient();
+    await chatClient.connect();
+    await chatClient.joinChat(chatId);
+</script>
 </body>
 </html>

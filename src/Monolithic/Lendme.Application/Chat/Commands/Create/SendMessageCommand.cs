@@ -42,8 +42,7 @@ public class SendMessageCommand : IRequest<SendMessageResponse>
                     throw new UnauthorizedAccessException(
                         $"User {request.SenderId} does not have access to chat {request.ChatId}");
                 }
-
-                // Создаем сообщение используя существующую структуру Message
+                
                 var message = new Message
                 {
                     Id = Guid.NewGuid(),
@@ -56,7 +55,6 @@ public class SendMessageCommand : IRequest<SendMessageResponse>
                     ReplyToMessageId = request.ReplyToMessageId
                 };
 
-                // Сохраняем сообщение
                 var savedMessage = await _chatService.SaveMessageAsync(message);
 
                 // Публикуем событие для отправки через SignalR
