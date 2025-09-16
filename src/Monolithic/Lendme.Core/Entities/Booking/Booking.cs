@@ -30,8 +30,9 @@ public class Booking
     // Collections
     public ICollection<BookingStatusHistory> StatusHistory { get; set; }
     public ICollection<BookingPayment> Payments { get; set; }
-    public ItemHandover PickupHandover { get; set; }
-    public ItemHandover ReturnHandover { get; set; }
+    
+    // public ItemHandover PickupHandover { get; set; }
+    // public ItemHandover ReturnHandover { get; set; }
     
     public bool IsDeleted { get; set; }
     //public BookingExtension Extension { get; set; }

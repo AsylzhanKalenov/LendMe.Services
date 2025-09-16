@@ -12,6 +12,12 @@ public class ItemDetails
     public Location Location { get; set; }
     public List<ItemImage> Images { get; set; }
     public RentalTerms Terms { get; set; }
+    
+    private ItemDetails() 
+    { 
+        Tags = new List<string>();
+    }
+    
     public ItemDetails(
         Guid itemId,
         string description,

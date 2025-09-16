@@ -5,7 +5,7 @@ services:
   # Cервисы
   lendme-service:
     build:
-      context: ./src/UserService
+      context: ./src/Lendme.Web
       dockerfile: Dockerfile.dev
       target: development
     ports:
@@ -29,7 +29,7 @@ services:
       mongo:
         condition: service_healthy
     volumes:
-      - ./src/UserService:/app
+      - ./src/Lendme.Web:/app
       - /app/bin
       - /app/obj
     networks:

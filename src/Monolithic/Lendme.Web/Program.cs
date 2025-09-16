@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Lendme.Application;
 using Lendme.Infrastructure;
 using Lendme.Infrastructure.Hubs;
 using Lendme.Web.Feature.Swagger;
@@ -7,6 +8,7 @@ using Lendme.Web.Feature.Swagger;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.ConfigureApplication();
 
 // SignalR
 builder.Services.AddSignalR();

@@ -18,7 +18,8 @@ namespace Lendme.Infrastructure.SqlPersistence
         public DbSet<BookingPayment> BookingPayments { get; set; }
         public DbSet<BookingStatusHistory> BookingStatusHistories { get; set; }
         public DbSet<ItemHandover> ItemHandovers { get; set; }
-        public DbSet<DetectedIssue> DetectedIssues { get; set; }
+        // TODO: Consider later
+        //public DbSet<DetectedIssue> DetectedIssues { get; set; }
 
         // Catalog Domain (Assumed entities based on typical catalog structure)
         public DbSet<Category> Categories { get; set; }
@@ -134,6 +135,7 @@ namespace Lendme.Infrastructure.SqlPersistence
         private void ConfigureCatalogEntities(ModelBuilder modelBuilder)
         {
             // Ваша существующая конфигурация каталога
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
         

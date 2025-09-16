@@ -21,7 +21,8 @@ public class BookingPayment
     
     // Details
     public string FailureReason { get; set; }
-    public PaymentMetadata Metadata { get; set; }
+    // TODO: Consider in payment development
+    //public PaymentMetadata Metadata { get; set; }
     
     // Relations
     public Booking Booking { get; set; }

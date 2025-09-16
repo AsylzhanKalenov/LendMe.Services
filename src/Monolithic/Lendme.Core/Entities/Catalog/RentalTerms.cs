@@ -10,6 +10,12 @@ public class RentalTerms
     public bool RequiresInsurance { get; set; }
     public List<string> RestrictedUses { get; set; }
     
+    private RentalTerms() 
+    { 
+        IncludedAccessories = new List<string>();
+        RestrictedUses = new List<string>();
+    }
+    
     public RentalTerms(
         string pickupInstructions,
         string usageGuidelines,

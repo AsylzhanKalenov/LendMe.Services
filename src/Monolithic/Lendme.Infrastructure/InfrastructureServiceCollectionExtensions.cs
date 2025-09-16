@@ -1,10 +1,12 @@
 ﻿using Lendme.Core.Interfaces;
 using Lendme.Core.Interfaces.Repositories;
+using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 using Lendme.Core.Interfaces.Services.ChatServices;
 using Lendme.Infrastructure.Implementations;
 using Lendme.Infrastructure.MongoPersistence;
 using Lendme.Infrastructure.Services;
 using Lendme.Infrastructure.SqlPersistence;
+using Lendme.Infrastructure.SqlPersistence.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +25,12 @@ public static class InfrastructureServiceCollectionExtensions
         
         services.AddMongoDb(configuration);
         services.AddPostgreSqlDb(configuration);
+        
+        // Регистрация репозиториев
+        services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IItemRepository, ItemRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IBookingRepository, BookingRepository>();
         
         return services;
     }
@@ -46,9 +54,6 @@ public static class InfrastructureServiceCollectionExtensions
             var client = sp.GetRequiredService<IMongoClient>();
             return client.GetDatabase(settings.DatabaseName);
         });
-        
-        // Регистрация репозиториев
-        services.AddScoped<IReviewRepository, ReviewRepository>();
         
         return services;
     }

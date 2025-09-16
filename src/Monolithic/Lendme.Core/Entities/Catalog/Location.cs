@@ -11,6 +11,8 @@ public class Location
     public string District { get; set; }
     public int RadiusMeters { get; set; } // Delivery radius
     
+    private Location() { }
+    
     public Location(
         double longitude,
         double latitude,

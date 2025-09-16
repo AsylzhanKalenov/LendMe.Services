@@ -23,16 +23,11 @@ public class ItemsController : ControllerBase
     
     // GET
     [HttpGet("categories")]
-    public ActionResult<List<CategoryDto>> CategoryList()
+    public async Task<ActionResult<List<CategoryDto>>> CategoryList(CancellationToken cancellationToken)
     {
-        return new List<CategoryDto>()
-        {
-            new CategoryDto()
-            {
-                Id = Guid.NewGuid(),
-                Name = "Category 1"
-            }
-        };
+        var result = await _mediator.Send(new GetCategoriesQuery(), cancellationToken);
+        
+        return Ok(result);
     }
 
     [HttpPost]

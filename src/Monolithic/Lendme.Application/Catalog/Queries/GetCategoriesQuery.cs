@@ -6,9 +6,8 @@ using MediatR;
 
 namespace Lendme.Application.Catalog.Queries;
 
-public abstract class GetCategoriesQuery : IRequest<List<CategoryDto>>
+public class GetCategoriesQuery : IRequest<List<CategoryDto>>
 {
-    
     public class Handler : IRequestHandler<GetCategoriesQuery, List<CategoryDto>>
     {
         private readonly ICategoryRepository _categoryRepository;

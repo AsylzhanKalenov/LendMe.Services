@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Lendme.Core.Entities.Booking;
+using Lendme.Core.Entities.Profile;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,14 +27,27 @@ public class ItemHandoverConfiguration : IEntityTypeConfiguration<ItemHandover>
         builder.OwnsOne(h => h.Location, location =>
         {
             location.Property(l => l.Method).HasColumnName("location_method");
-            location.Property(l => l.Address).HasColumnName("location_address");
             
-            // TODO: consider city as separate entity
-            //location.Property(l => l.City).HasColumnName("location_city");
+            // Convert Address to JSON
+            location.Property(l => l.Address)
+                .HasColumnName("location_address")
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<Address>(v, (JsonSerializerOptions?)null)
+                );
+            
             location.Property(l => l.MeetingPoint).HasColumnName("location_meeting_point");
             location.Property(l => l.Instructions).HasColumnName("location_instructions");
             location.Property(l => l.Latitude).HasColumnName("location_latitude");
             location.Property(l => l.Longitude).HasColumnName("location_longitude");
+            
+            // Convert GeoLocation to JSON
+            location.Property(l => l.Coordinates)
+                .HasColumnName("location_coordinates")
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<GeoLocation>(v, (JsonSerializerOptions?)null)
+                );
         });
 
         // Вложенный объект Condition
@@ -49,8 +63,16 @@ public class ItemHandoverConfiguration : IEntityTypeConfiguration<ItemHandover>
             condition.Property(c => c.MissingAccessories)
                 .HasColumnName("condition_missing_accessories")
                 .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?) null),
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
                     v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions?)null)
+                );
+                
+            // Convert Damages list to JSON
+            condition.Property(c => c.Damages)
+                .HasColumnName("condition_damages")
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                    v => JsonSerializer.Deserialize<List<DamageReport>>(v, (JsonSerializerOptions?)null)
                 );
         });
 
@@ -67,14 +89,13 @@ public class ItemHandoverConfiguration : IEntityTypeConfiguration<ItemHandover>
             verification.Property(v => v.DisputeReason).HasColumnName("verify_dispute_reason");
         });
 
-        // TODO: consider separate entity
-        // Список ID фотографий как JSON
-        // builder.Property(h => h.PhotoIds)
-        //     .HasColumnName("photo_ids")
-        //     .HasConversion(
-        //         v => JsonSerializer.Serialize(v, null),
-        //         v => JsonSerializer.Deserialize<List<Guid>>(v, null) ?? new List<Guid>()
-        //     );
+        // Convert Photos list to JSON
+        builder.Property(h => h.Photos)
+            .HasColumnName("photos")
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                v => JsonSerializer.Deserialize<List<HandoverPhoto>>(v, (JsonSerializerOptions?)null)
+            );
 
         // Связь с Booking
         builder.HasOne<Booking>()
