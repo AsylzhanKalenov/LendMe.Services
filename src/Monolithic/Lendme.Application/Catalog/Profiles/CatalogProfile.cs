@@ -8,6 +8,8 @@ public class CatalogProfile : Profile
 {
     public CatalogProfile()
     {
+        CreateMap<Category, CategoryDto>();
+        
         // Item mappings
         CreateMap<Item, ItemDto>()
             .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()));

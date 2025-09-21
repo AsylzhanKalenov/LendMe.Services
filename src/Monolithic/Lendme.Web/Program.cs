@@ -3,10 +3,13 @@ using Asp.Versioning.ApiExplorer;
 using Lendme.Application;
 using Lendme.Infrastructure;
 using Lendme.Infrastructure.Hubs;
+using Lendme.Web.Feature.AutoMapper;
+using Lendme.Web.Feature.Seeder;
 using Lendme.Web.Feature.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.ConfigureApplication();
 
@@ -39,6 +42,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
+builder.Services.AddScoped<DatabaseSeeder>();
 
 builder.Services.AddControllers();
 
@@ -47,6 +51,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await SeedDatabaseAsync(app);
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI(options =>
@@ -66,3 +71,10 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+
+static async Task SeedDatabaseAsync(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    await seeder.SeedAsync();
+}

@@ -7,7 +7,7 @@ public class Item
     public decimal DailyPrice { get; set; }
     public decimal? WeeklyPrice { get; set; }
     public decimal? MonthlyPrice { get; set; }
-    public decimal DepositAmount { get; set; }
+    public decimal? DepositAmount { get; set; }
     public bool IsAvailable { get; set; }
     public ItemStatus Status { get; set; }
     public Guid CategoryId { get; set; }
@@ -25,7 +25,7 @@ public class Item
         decimal dailyPrice,
         decimal? weeklyPrice,
         decimal? monthlyPrice,
-        decimal depositAmount,
+        decimal? depositAmount,
         Guid categoryId,
         Guid ownerId)
     {

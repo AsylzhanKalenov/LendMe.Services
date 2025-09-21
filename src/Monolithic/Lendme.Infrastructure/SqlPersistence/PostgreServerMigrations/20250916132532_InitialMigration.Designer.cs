@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250916115106_InitialMigration")]
+    [Migration("20250916132532_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -233,11 +233,14 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("integer");
 
                     b.Property<string>("IconUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
@@ -249,10 +252,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -276,7 +275,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<decimal>("DailyPrice")
                         .HasColumnType("numeric");
 
-                    b.Property<decimal>("DepositAmount")
+                    b.Property<decimal?>("DepositAmount")
                         .HasColumnType("numeric");
 
                     b.Property<bool>("IsAvailable")

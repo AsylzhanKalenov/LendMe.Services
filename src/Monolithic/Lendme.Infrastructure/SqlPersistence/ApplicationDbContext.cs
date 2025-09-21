@@ -2,6 +2,7 @@ using System.Text.Json;
 using Lendme.Core.Entities.Booking;
 using Lendme.Core.Entities.Catalog;
 using Lendme.Core.Entities.ProfileSQLEntities;
+using Lendme.Infrastructure.SqlPersistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lendme.Infrastructure.SqlPersistence
@@ -135,6 +136,7 @@ namespace Lendme.Infrastructure.SqlPersistence
         private void ConfigureCatalogEntities(ModelBuilder modelBuilder)
         {
             // Ваша существующая конфигурация каталога
+            modelBuilder.ApplyConfiguration(new ItemDetailsConfiguration());
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 

@@ -67,9 +67,9 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Slug = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     ParentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    IconUrl = table.Column<string>(type: "text", nullable: false),
+                    IconUrl = table.Column<string>(type: "text", nullable: true),
                     DisplayOrder = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -233,7 +233,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     DailyPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     WeeklyPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     MonthlyPrice = table.Column<decimal>(type: "numeric", nullable: true),
-                    DepositAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    DepositAmount = table.Column<decimal>(type: "numeric", nullable: true),
                     IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
