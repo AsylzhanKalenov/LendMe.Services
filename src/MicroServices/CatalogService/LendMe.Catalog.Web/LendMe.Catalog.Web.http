@@ -1,0 +1,6 @@
+@LendMe.Catalog.Web_HostAddress = http://localhost:5289
+
+GET {{LendMe.Catalog.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

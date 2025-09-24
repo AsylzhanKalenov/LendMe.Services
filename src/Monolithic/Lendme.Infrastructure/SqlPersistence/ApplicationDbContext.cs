@@ -27,8 +27,10 @@ namespace Lendme.Infrastructure.SqlPersistence
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemDetails> ItemsDetails { get; set; }
         public DbSet<ItemImage> ItemImages { get; set; }
-        public DbSet<Location> ItemAvailabilities { get; set; }
-        public DbSet<RentalTerms> RentalTerms { get; set; }
+        public DbSet<Rent> Rents { get; set; }
+        public DbSet<RentItems> RentItems { get; set; }
+        // public DbSet<Location> ItemAvailabilities { get; set; }
+        // public DbSet<RentalTerms> RentalTerms { get; set; }
         
         // Profile Domain
         public DbSet<UserProfile> UserProfiles { get; set; }
@@ -121,7 +123,7 @@ namespace Lendme.Infrastructure.SqlPersistence
                     .HasDatabaseName("IX_UserPreferences_UserId");
 
                 // Table name
-                entity.ToTable("user_preferences");
+                entity.ToTable("UserPreferences");
             });
 
             // Другие конфигурации профиля...
@@ -136,6 +138,7 @@ namespace Lendme.Infrastructure.SqlPersistence
         private void ConfigureCatalogEntities(ModelBuilder modelBuilder)
         {
             // Ваша существующая конфигурация каталога
+            modelBuilder.ApplyConfiguration(new RentConfiguration());
             modelBuilder.ApplyConfiguration(new ItemDetailsConfiguration());
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }

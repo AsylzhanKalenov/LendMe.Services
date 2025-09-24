@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250916132532_InitialMigration")]
+    [Migration("20250921090744_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -88,7 +88,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("bookings", (string)null);
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("Lendme.Core.Entities.Booking.BookingPayment", b =>
@@ -224,7 +224,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                     b.HasIndex("Type", "Status");
 
-                    b.ToTable("item_handovers", (string)null);
+                    b.ToTable("ItemHandovers", (string)null);
                 });
 
             modelBuilder.Entity("Lendme.Core.Entities.Catalog.Category", b =>
@@ -284,6 +284,12 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
                     b.Property<decimal?>("MonthlyPrice")
                         .HasColumnType("numeric");
 
@@ -339,7 +345,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.HasIndex("ItemId1")
                         .IsUnique();
 
-                    b.ToTable("item_details", (string)null);
+                    b.ToTable("ItemDetails", (string)null);
                 });
 
             modelBuilder.Entity("Lendme.Core.Entities.Catalog.ItemImage", b =>
@@ -378,6 +384,37 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.HasIndex("ItemDetailsId");
 
                     b.ToTable("ItemImages");
+                });
+
+            modelBuilder.Entity("Lendme.Core.Entities.Catalog.Rent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Rent", (string)null);
+                });
+
+            modelBuilder.Entity("Lendme.Core.Entities.Catalog.RentItems", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RentId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("RentId");
+
+                    b.ToTable("RentItems");
                 });
 
             modelBuilder.Entity("Lendme.Core.Entities.ProfileSQLEntities.UserAddress", b =>
@@ -498,7 +535,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .IsUnique()
                         .HasDatabaseName("IX_UserPreferences_UserId");
 
-                    b.ToTable("user_preferences", (string)null);
+                    b.ToTable("UserPreferences", (string)null);
                 });
 
             modelBuilder.Entity("Lendme.Core.Entities.ProfileSQLEntities.UserProfile", b =>
@@ -851,7 +888,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                             b1.HasKey("ItemHandoverId");
 
-                            b1.ToTable("item_handovers");
+                            b1.ToTable("ItemHandovers");
 
                             b1.WithOwner()
                                 .HasForeignKey("ItemHandoverId");
@@ -900,7 +937,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                             b1.HasKey("ItemHandoverId");
 
-                            b1.ToTable("item_handovers");
+                            b1.ToTable("ItemHandovers");
 
                             b1.WithOwner()
                                 .HasForeignKey("ItemHandoverId");
@@ -944,7 +981,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                             b1.HasKey("ItemHandoverId");
 
-                            b1.ToTable("item_handovers");
+                            b1.ToTable("ItemHandovers");
 
                             b1.WithOwner()
                                 .HasForeignKey("ItemHandoverId");
@@ -993,10 +1030,24 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.HasOne("Lendme.Core.Entities.Catalog.Item", null)
                         .WithOne("Details")
                         .HasForeignKey("Lendme.Core.Entities.Catalog.ItemDetails", "ItemId1");
+                });
 
+            modelBuilder.Entity("Lendme.Core.Entities.Catalog.ItemImage", b =>
+                {
+                    b.HasOne("Lendme.Core.Entities.Catalog.ItemDetails", "ItemDetails")
+                        .WithMany("Images")
+                        .HasForeignKey("ItemDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemDetails");
+                });
+
+            modelBuilder.Entity("Lendme.Core.Entities.Catalog.Rent", b =>
+                {
                     b.OwnsOne("Lendme.Core.Entities.Catalog.Location", "Location", b1 =>
                         {
-                            b1.Property<Guid>("ItemDetailsId")
+                            b1.Property<Guid>("RentId")
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("Address")
@@ -1039,20 +1090,20 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                                 .HasDefaultValue("Point")
                                 .HasColumnName("location_type");
 
-                            b1.HasKey("ItemDetailsId");
+                            b1.HasKey("RentId");
 
                             b1.HasIndex("Latitude", "Longitude")
                                 .HasDatabaseName("IX_ItemDetails_Location_Coordinates");
 
-                            b1.ToTable("ItemAvailabilities");
+                            b1.ToTable("Rent");
 
                             b1.WithOwner()
-                                .HasForeignKey("ItemDetailsId");
+                                .HasForeignKey("RentId");
                         });
 
                     b.OwnsOne("Lendme.Core.Entities.Catalog.RentalTerms", "Terms", b1 =>
                         {
-                            b1.Property<Guid>("ItemDetailsId")
+                            b1.Property<Guid>("RentId")
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("CancellationPolicy")
@@ -1091,12 +1142,12 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                                 .HasColumnType("character varying(2000)")
                                 .HasColumnName("terms_usage_guidelines");
 
-                            b1.HasKey("ItemDetailsId");
+                            b1.HasKey("RentId");
 
-                            b1.ToTable("RentalTerms");
+                            b1.ToTable("Rent");
 
                             b1.WithOwner()
-                                .HasForeignKey("ItemDetailsId");
+                                .HasForeignKey("RentId");
                         });
 
                     b.Navigation("Location")
@@ -1106,15 +1157,23 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Lendme.Core.Entities.Catalog.ItemImage", b =>
+            modelBuilder.Entity("Lendme.Core.Entities.Catalog.RentItems", b =>
                 {
-                    b.HasOne("Lendme.Core.Entities.Catalog.ItemDetails", "ItemDetails")
-                        .WithMany("Images")
-                        .HasForeignKey("ItemDetailsId")
+                    b.HasOne("Lendme.Core.Entities.Catalog.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ItemDetails");
+                    b.HasOne("Lendme.Core.Entities.Catalog.Rent", "Rent")
+                        .WithMany()
+                        .HasForeignKey("RentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("Rent");
                 });
 
             modelBuilder.Entity("Lendme.Core.Entities.ProfileSQLEntities.UserAddress", b =>

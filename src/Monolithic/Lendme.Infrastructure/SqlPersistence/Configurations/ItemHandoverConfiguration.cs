@@ -10,7 +10,7 @@ public class ItemHandoverConfiguration : IEntityTypeConfiguration<ItemHandover>
 {
     public void Configure(EntityTypeBuilder<ItemHandover> builder)
     {
-        builder.ToTable("item_handovers");
+        builder.ToTable("ItemHandovers");
 
         builder.HasKey(h => h.Id);
 

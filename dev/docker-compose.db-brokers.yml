@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  db_postgres:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_USER: dev_user
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: main_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dev_user -d main_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - db-net
+
+  db_redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - db-net
+
+  db_mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin_password
+      MONGO_INITDB_DATABASE: orders_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./database/mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - db-net
+
+  db_zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - db-net
+
+  db_kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - db_zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: db_zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://db_kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    networks:
+      - db-net
+
+volumes:
+  postgres_data:
+  redis_data:
+  mongo_data:
+
+networks:
+  db-net:

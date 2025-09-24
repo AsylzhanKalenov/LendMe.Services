@@ -67,9 +67,7 @@ public class CreateItemCommand : IRequest<CreateItemResponse>
             var itemDetails = new ItemDetails(
                 item.Id,
                 request.Description,
-                request.Tags,
-                location,
-                rentalTerms);
+                request.Tags);
 
             // Set details to item
             item.SetDetails(itemDetails);

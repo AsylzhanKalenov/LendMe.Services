@@ -8,7 +8,7 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
 {
     public void Configure(EntityTypeBuilder<Booking> builder)
     {
-        builder.ToTable("bookings");
+        builder.ToTable("Bookings");
         
         // BookingFinancials как вложенный объект
         builder.OwnsOne(b => b.Financials, financials =>

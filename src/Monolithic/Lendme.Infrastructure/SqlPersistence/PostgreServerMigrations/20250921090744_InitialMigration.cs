@@ -16,7 +16,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 .Annotation("Npgsql:PostgresExtension:hstore", ",,");
 
             migrationBuilder.CreateTable(
-                name: "bookings",
+                name: "Bookings",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -40,7 +40,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_bookings", x => x.Id);
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,6 +81,31 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         column: x => x.ParentId,
                         principalTable: "Categories",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rent",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    location_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Point"),
+                    location_longitude = table.Column<double>(type: "double precision", precision: 18, scale: 6, nullable: false),
+                    location_latitude = table.Column<double>(type: "double precision", precision: 18, scale: 6, nullable: false),
+                    location_address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    location_city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    location_district = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    location_radius_meters = table.Column<int>(type: "integer", nullable: false),
+                    terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
+                    terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
+                    terms_cancellation_policy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false),
+                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false),
+                    terms_restricted_uses = table.Column<string>(type: "jsonb", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,9 +160,9 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     table.PrimaryKey("PK_BookingFinancials", x => x.BookingId);
                     table.ForeignKey(
-                        name: "FK_BookingFinancials_bookings_BookingId",
+                        name: "FK_BookingFinancials_Bookings_BookingId",
                         column: x => x.BookingId,
-                        principalTable: "bookings",
+                        principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -164,15 +189,15 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     table.PrimaryKey("PK_BookingPayments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookingPayments_bookings_BookingId",
+                        name: "FK_BookingPayments_Bookings_BookingId",
                         column: x => x.BookingId,
-                        principalTable: "bookings",
+                        principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "item_handovers",
+                name: "ItemHandovers",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -209,17 +234,17 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_item_handovers", x => x.Id);
+                    table.PrimaryKey("PK_ItemHandovers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_item_handovers_bookings_BookingId",
+                        name: "FK_ItemHandovers_Bookings_BookingId",
                         column: x => x.BookingId,
-                        principalTable: "bookings",
+                        principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_item_handovers_bookings_BookingId1",
+                        name: "FK_ItemHandovers_Bookings_BookingId1",
                         column: x => x.BookingId1,
-                        principalTable: "bookings",
+                        principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -234,6 +259,8 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     WeeklyPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     MonthlyPrice = table.Column<decimal>(type: "numeric", nullable: true),
                     DepositAmount = table.Column<decimal>(type: "numeric", nullable: true),
+                    Longitude = table.Column<double>(type: "double precision", nullable: false),
+                    Latitude = table.Column<double>(type: "double precision", nullable: false),
                     IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -249,31 +276,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         name: "FK_Items_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "user_preferences",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProfileId = table.Column<Guid>(type: "uuid", nullable: false),
-                    general_preferences = table.Column<string>(type: "jsonb", nullable: false),
-                    notification_preferences = table.Column<string>(type: "jsonb", nullable: false),
-                    privacy_preferences = table.Column<string>(type: "jsonb", nullable: false),
-                    owner_preferences = table.Column<string>(type: "jsonb", nullable: false),
-                    renter_preferences = table.Column<string>(type: "jsonb", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_user_preferences", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_user_preferences_UserProfiles_ProfileId",
-                        column: x => x.ProfileId,
-                        principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -304,6 +306,31 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     table.PrimaryKey("PK_UserAddresses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserAddresses_UserProfiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPreferences",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProfileId = table.Column<Guid>(type: "uuid", nullable: false),
+                    general_preferences = table.Column<string>(type: "jsonb", nullable: false),
+                    notification_preferences = table.Column<string>(type: "jsonb", nullable: false),
+                    privacy_preferences = table.Column<string>(type: "jsonb", nullable: false),
+                    owner_preferences = table.Column<string>(type: "jsonb", nullable: false),
+                    renter_preferences = table.Column<string>(type: "jsonb", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPreferences", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPreferences_UserProfiles_ProfileId",
                         column: x => x.ProfileId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
@@ -380,7 +407,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "item_details",
+                name: "ItemDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -391,40 +418,41 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_item_details", x => x.Id);
+                    table.PrimaryKey("PK_ItemDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_item_details_Items_ItemId",
+                        name: "FK_ItemDetails_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_item_details_Items_ItemId1",
+                        name: "FK_ItemDetails_Items_ItemId1",
                         column: x => x.ItemId1,
                         principalTable: "Items",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemAvailabilities",
+                name: "RentItems",
                 columns: table => new
                 {
-                    ItemDetailsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    location_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Point"),
-                    location_longitude = table.Column<double>(type: "double precision", precision: 18, scale: 6, nullable: false),
-                    location_latitude = table.Column<double>(type: "double precision", precision: 18, scale: 6, nullable: false),
-                    location_address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    location_city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    location_district = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    location_radius_meters = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RentId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemAvailabilities", x => x.ItemDetailsId);
+                    table.PrimaryKey("PK_RentItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemAvailabilities_item_details_ItemDetailsId",
-                        column: x => x.ItemDetailsId,
-                        principalTable: "item_details",
+                        name: "FK_RentItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RentItems_Rent_RentId",
+                        column: x => x.RentId,
+                        principalTable: "Rent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -446,33 +474,9 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     table.PrimaryKey("PK_ItemImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemImages_item_details_ItemDetailsId",
+                        name: "FK_ItemImages_ItemDetails_ItemDetailsId",
                         column: x => x.ItemDetailsId,
-                        principalTable: "item_details",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RentalTerms",
-                columns: table => new
-                {
-                    ItemDetailsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
-                    terms_cancellation_policy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false),
-                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false),
-                    terms_restricted_uses = table.Column<string>(type: "jsonb", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RentalTerms", x => x.ItemDetailsId);
-                    table.ForeignKey(
-                        name: "FK_RentalTerms_item_details_ItemDetailsId",
-                        column: x => x.ItemDetailsId,
-                        principalTable: "item_details",
+                        principalTable: "ItemDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -488,36 +492,31 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_item_details_ItemId1",
-                table: "item_details",
-                column: "ItemId1",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ItemDetails_ItemId",
-                table: "item_details",
+                table: "ItemDetails",
                 column: "ItemId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_item_handovers_BookingId",
-                table: "item_handovers",
+                name: "IX_ItemDetails_ItemId1",
+                table: "ItemDetails",
+                column: "ItemId1",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemHandovers_BookingId",
+                table: "ItemHandovers",
                 column: "BookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_item_handovers_BookingId1",
-                table: "item_handovers",
+                name: "IX_ItemHandovers_BookingId1",
+                table: "ItemHandovers",
                 column: "BookingId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_item_handovers_Type_Status",
-                table: "item_handovers",
+                name: "IX_ItemHandovers_Type_Status",
+                table: "ItemHandovers",
                 columns: new[] { "Type", "Status" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemDetails_Location_Coordinates",
-                table: "ItemAvailabilities",
-                columns: new[] { "location_latitude", "location_longitude" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemImages_ItemDetailsId",
@@ -530,15 +529,30 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserPreferences_UserId",
-                table: "user_preferences",
-                column: "ProfileId",
-                unique: true);
+                name: "IX_ItemDetails_Location_Coordinates",
+                table: "Rent",
+                columns: new[] { "location_latitude", "location_longitude" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentItems_ItemId",
+                table: "RentItems",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentItems_RentId",
+                table: "RentItems",
+                column: "RentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAddresses_ProfileId",
                 table: "UserAddresses",
                 column: "ProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPreferences_UserId",
+                table: "UserPreferences",
+                column: "ProfileId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserStatistics_ProfileId",
@@ -565,22 +579,19 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "BookingStatusHistories");
 
             migrationBuilder.DropTable(
-                name: "item_handovers");
-
-            migrationBuilder.DropTable(
-                name: "ItemAvailabilities");
+                name: "ItemHandovers");
 
             migrationBuilder.DropTable(
                 name: "ItemImages");
 
             migrationBuilder.DropTable(
-                name: "RentalTerms");
-
-            migrationBuilder.DropTable(
-                name: "user_preferences");
+                name: "RentItems");
 
             migrationBuilder.DropTable(
                 name: "UserAddresses");
+
+            migrationBuilder.DropTable(
+                name: "UserPreferences");
 
             migrationBuilder.DropTable(
                 name: "UserStatistics");
@@ -589,10 +600,13 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "VerificationDocuments");
 
             migrationBuilder.DropTable(
-                name: "bookings");
+                name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "item_details");
+                name: "ItemDetails");
+
+            migrationBuilder.DropTable(
+                name: "Rent");
 
             migrationBuilder.DropTable(
                 name: "UserProfiles");

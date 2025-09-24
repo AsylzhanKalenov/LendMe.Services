@@ -8,6 +8,8 @@ namespace Lendme.Application.Catalog.Queries;
 
 public class GetItemsQuery : IRequest<GetItemsResponse>
 {
+    public double Longitude { get; set; }
+    public double Latitude { get; set; }
     public int PageNumber { get; set; } = 1;
     public int PageSize { get; set; } = 20;
     
