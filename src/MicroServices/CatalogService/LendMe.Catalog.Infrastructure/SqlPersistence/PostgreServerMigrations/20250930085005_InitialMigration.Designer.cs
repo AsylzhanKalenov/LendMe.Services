@@ -14,7 +14,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250924142404_InitialMigration")]
+    [Migration("20250930085005_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -62,16 +62,11 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid?>("ParentId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ParentId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
 
                     b.HasIndex("ParentId");
-
-                    b.HasIndex("ParentId1");
 
                     b.ToTable("Categories");
                 });
@@ -323,16 +318,10 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.Category", b =>
                 {
-                    b.HasOne("LendMe.Catalog.Core.Entity.Category", null)
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("LendMe.Catalog.Core.Entity.Category", "Parent")
                         .WithMany("Children")
-                        .HasForeignKey("ParentId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Parent");
                 });
@@ -376,28 +365,28 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                                 .HasColumnType("uuid");
 
                             b1.Property<string>("CancellationPolicy")
-                                .IsRequired()
                                 .HasMaxLength(1000)
-                                .HasColumnType("character varying(1000)")
-                                .HasColumnName("terms_cancellation_policy");
+                                .HasColumnType("character varying(1000)");
 
                             b1.Property<string>("IncludedAccessories")
                                 .IsRequired()
-                                .HasColumnType("jsonb")
-                                .HasColumnName("terms_included_accessories");
+                                .HasColumnType("jsonb");
 
                             b1.Property<string>("PickupInstructions")
                                 .IsRequired()
                                 .HasMaxLength(1000)
-                                .HasColumnType("character varying(1000)")
-                                .HasColumnName("terms_pickup_instructions");
+                                .HasColumnType("character varying(1000)");
 
                             b1.Property<bool>("RequiresDeposit")
+                                .ValueGeneratedOnAdd()
                                 .HasColumnType("boolean")
+                                .HasDefaultValue(false)
                                 .HasColumnName("terms_requires_deposit");
 
                             b1.Property<bool>("RequiresInsurance")
+                                .ValueGeneratedOnAdd()
                                 .HasColumnType("boolean")
+                                .HasDefaultValue(false)
                                 .HasColumnName("terms_requires_insurance");
 
                             b1.Property<string>("RestrictedUses")
@@ -406,10 +395,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                                 .HasColumnName("terms_restricted_uses");
 
                             b1.Property<string>("UsageGuidelines")
-                                .IsRequired()
                                 .HasMaxLength(2000)
-                                .HasColumnType("character varying(2000)")
-                                .HasColumnName("terms_usage_guidelines");
+                                .HasColumnType("character varying(2000)");
 
                             b1.HasKey("RentId");
 

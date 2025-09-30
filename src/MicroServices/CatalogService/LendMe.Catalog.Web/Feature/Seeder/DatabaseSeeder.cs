@@ -68,6 +68,7 @@ public class DatabaseSeeder
                 {
                     new Item(
                         "iPhone 15 Pro",
+                        "0001",
                         50m,
                         300m,
                         1000m,
@@ -77,6 +78,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[0] = Guid.Parse("10000000-0000-0000-0000-000000000001") },
                     new Item(
                         "MacBook Pro 16\"",
+                        "0002",
                         100m,
                         600m,
                         2000m,
@@ -86,6 +88,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[1] = Guid.Parse("10000000-0000-0000-0000-000000000002") },
                     new Item(
                         "Горный велосипед Trek",
+                        "0003",
                         25m,
                         150m,
                         500m,
@@ -95,6 +98,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[2] = Guid.Parse("10000000-0000-0000-0000-000000000003") },
                     new Item(
                         "Дрель Bosch Professional",
+                        "0004",
                         20m,
                         120m,
                         400m,
@@ -104,6 +108,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[3] = Guid.Parse("10000000-0000-0000-0000-000000000004") },
                     new Item(
                         "Электросамокат Xiaomi",
+                        "0005",
                         20m,
                         120m,
                         400m,
@@ -113,6 +118,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[4] = Guid.Parse("10000000-0000-0000-0000-000000000005") },
                     new Item(
                         "Sony PlayStation 5",
+                        "0006",
                         30m,
                         180m,
                         600m,
@@ -122,6 +128,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[5] = Guid.Parse("10000000-0000-0000-0000-000000000006") },
                     new Item(
                         "Сноуборд Burton",
+                        "0007",
                         40m,
                         240m,
                         800m,
@@ -131,6 +138,7 @@ public class DatabaseSeeder
                     ) { Id = itemIds[6] = Guid.Parse("10000000-0000-0000-0000-000000000007") },
                     new Item(
                         "Смокинг Hugo Boss",
+                        "0008",
                         45m,
                         270m,
                         900m,
@@ -181,6 +189,10 @@ public class DatabaseSeeder
                         District = "Алмалинский",
                         RadiusMeters = 5000,
                         CreatedAt = DateTimeOffset.UtcNow.AddDays(-30),
+                        Terms = new RentalTerms()
+                        {
+                            PickupInstructions = "Test1"
+                        },
                         Points = geometryFactory.CreatePoint(new Coordinate(76.9286, 43.2220)) // Центр города (Республика)
                     },
                     new Rent
@@ -196,6 +208,10 @@ public class DatabaseSeeder
                         District = "Медеуский",
                         RadiusMeters = 3000,
                         CreatedAt = DateTimeOffset.UtcNow.AddDays(-25),
+                        Terms = new RentalTerms()
+                        {
+                            PickupInstructions = "Test1"
+                        },
                         Points = geometryFactory.CreatePoint(new Coordinate(76.9755, 43.2630)) // Достык (~6 км к юго-востоку)
                     },
                     new Rent
@@ -211,6 +227,10 @@ public class DatabaseSeeder
                         District = "Ауэзовский",
                         RadiusMeters = 7000,
                         CreatedAt = DateTimeOffset.UtcNow.AddDays(-20),
+                        Terms = new RentalTerms()
+                        {
+                            PickupInstructions = "Test1"
+                        },
                         Points = geometryFactory.CreatePoint(new Coordinate(76.8547, 43.2565)) // Толе би (~7 км к западу)
                     },
                     new Rent
@@ -226,6 +246,10 @@ public class DatabaseSeeder
                         District = "Бостандыкский",
                         RadiusMeters = 10000,
                         CreatedAt = DateTimeOffset.UtcNow.AddDays(-15),
+                        Terms = new RentalTerms()
+                        {
+                            PickupInstructions = "Test1"
+                        },
                         Points = geometryFactory.CreatePoint(new Coordinate(76.9200, 43.1850)) // Шевченко (~4 км к югу)
                     },
                     new Rent
@@ -241,6 +265,10 @@ public class DatabaseSeeder
                         District = "Жетысуский",
                         RadiusMeters = 2000,
                         CreatedAt = DateTimeOffset.UtcNow.AddDays(-10),
+                        Terms = new RentalTerms()
+                        {
+                            PickupInstructions = "Test1"
+                        },
                         Points = geometryFactory.CreatePoint(new Coordinate(76.8900, 43.2800)) // Райымбека (~8 км к северо-западу)
                     }
                 };

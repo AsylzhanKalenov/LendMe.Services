@@ -238,29 +238,29 @@ public class ItemSearchRepository: IItemSearchRepository
         
         var query = @"
             SELECT 
-                i.id,
-                i.title,
-                i.daily_price,
-                i.weekly_price,
-                i.monthly_price,
-                i.is_available,
-                i.status,
-                c.name as category_name,
-                r.latitude,
-                r.longitude,
-                r.address,
-                r.city,
-                r.district,
+                i.Id,
+                i.Title,
+                i.DailyPrice,
+                i.WeeklyPrice,
+                i.MonthlyPrice,
+                i.IsAvailable,
+                i.Status,
+                c.Name as CategoryName,
+                r.Latitude,
+                r.Longitude,
+                r.Address,
+                r.City,
+                r.District,
                 ST_Distance(
                     r.location::geography,
                     ST_SetSRID(ST_MakePoint(@Longitude, @Latitude), 4326)::geography
                 ) as distance_meters
-            FROM items i
-            INNER JOIN rent_items ri ON ri.item_id = i.id
-            INNER JOIN rents r ON r.id = ri.rent_id
-            LEFT JOIN categories c ON c.id = i.category_id
-            WHERE i.is_deleted = false
-                AND i.is_available = true
+            FROM Items i
+            INNER JOIN RentItems ri ON ri.ItemId = i.Id
+            INNER JOIN Rent r ON r.Id = ri.RentId
+            LEFT JOIN Categories c ON c.Id = i.CategoryId
+            WHERE i.IsDeleted = false
+                AND i.IsAvailable = true
                 AND ST_DWithin(
                     r.location::geography,
                     ST_SetSRID(ST_MakePoint(@Longitude, @Latitude), 4326)::geography,

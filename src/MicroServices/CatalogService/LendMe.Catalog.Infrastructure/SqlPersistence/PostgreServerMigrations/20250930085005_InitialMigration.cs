@@ -28,8 +28,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     IconUrl = table.Column<string>(type: "text", nullable: true),
                     DisplayOrder = table.Column<int>(type: "integer", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    ParentId1 = table.Column<Guid>(type: "uuid", nullable: false)
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -39,13 +38,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         column: x => x.ParentId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Categories_Categories_ParentId1",
-                        column: x => x.ParentId1,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,12 +57,12 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     RadiusMeters = table.Column<int>(type: "integer", nullable: false, defaultValue: 1000),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     location = table.Column<Point>(type: "geography(POINT, 4326)", nullable: false),
-                    terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
-                    terms_cancellation_policy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false),
-                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false),
+                    Terms_PickupInstructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    Terms_UsageGuidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    Terms_IncludedAccessories = table.Column<string>(type: "jsonb", nullable: false),
+                    Terms_CancellationPolicy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     terms_restricted_uses = table.Column<string>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
@@ -186,11 +179,6 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "IX_Categories_ParentId",
                 table: "Categories",
                 column: "ParentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_ParentId1",
-                table: "Categories",
-                column: "ParentId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemDetails_ItemId",

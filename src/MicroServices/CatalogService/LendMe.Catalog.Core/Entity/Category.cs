@@ -12,6 +12,6 @@ public class Category
     public DateTimeOffset CreatedAt { get; set; }
     
     // Self-referencing
-    public Category Parent { get; set; }
+    public Category? Parent { get; set; }
     public ICollection<Category> Children { get; set; }
 }

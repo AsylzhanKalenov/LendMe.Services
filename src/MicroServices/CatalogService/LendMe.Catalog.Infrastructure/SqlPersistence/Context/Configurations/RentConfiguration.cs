@@ -56,15 +56,15 @@ public class RentConfiguration : IEntityTypeConfiguration<Rent>
         builder.OwnsOne(x => x.Terms, terms =>
         {
             terms.Property(t => t.PickupInstructions)
-                .HasColumnName("terms_pickup_instructions")
+                //.HasColumnName("terms_pickup_instructions")
                 .HasMaxLength(1000);
                 
             terms.Property(t => t.UsageGuidelines)
-                .HasColumnName("terms_usage_guidelines")
+                //.HasColumnName("terms_usage_guidelines")
                 .HasMaxLength(2000);
                 
             terms.Property(t => t.IncludedAccessories)
-                .HasColumnName("terms_included_accessories")
+                //.HasColumnName("terms_included_accessories")
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
                     v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions?)null) ?? new List<string>()
@@ -72,14 +72,16 @@ public class RentConfiguration : IEntityTypeConfiguration<Rent>
                 .HasColumnType("jsonb");
                 
             terms.Property(t => t.CancellationPolicy)
-                .HasColumnName("terms_cancellation_policy")
+                //.HasColumnName("terms_cancellation_policy")
                 .HasMaxLength(1000);
                 
             terms.Property(t => t.RequiresDeposit)
-                .HasColumnName("terms_requires_deposit");
+                .HasColumnName("terms_requires_deposit")
+                .HasDefaultValue(false);
                 
             terms.Property(t => t.RequiresInsurance)
-                .HasColumnName("terms_requires_insurance");
+                .HasColumnName("terms_requires_insurance")
+                .HasDefaultValue(false);;
                 
             terms.Property(t => t.RestrictedUses)
                 .HasColumnName("terms_restricted_uses")

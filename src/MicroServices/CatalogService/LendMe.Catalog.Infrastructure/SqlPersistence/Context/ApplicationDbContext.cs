@@ -32,11 +32,12 @@ public class ApplicationDbContext: DbContext
             entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-            entity.HasOne<Category>()
-                .WithMany()
+            
+            entity.HasOne(e => e.Parent)
+                .WithMany(e => e.Children)
                 .HasForeignKey(e => e.ParentId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
 
             entity.HasIndex(e => e.Name);
         });

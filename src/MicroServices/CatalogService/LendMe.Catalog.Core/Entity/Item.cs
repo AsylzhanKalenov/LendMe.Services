@@ -23,6 +23,7 @@ public class Item
     
     public Item(
         string title,
+        string identifyNumber,
         decimal dailyPrice,
         decimal? weeklyPrice,
         decimal? monthlyPrice,
@@ -31,6 +32,7 @@ public class Item
         Guid ownerId)
     {
         Id = Guid.NewGuid();
+        IdentifyNumber = identifyNumber;
         Title = title;
         DailyPrice = dailyPrice;
         WeeklyPrice = weeklyPrice;
