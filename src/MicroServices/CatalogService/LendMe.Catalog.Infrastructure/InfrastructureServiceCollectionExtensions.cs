@@ -17,7 +17,7 @@ public static class InfrastructureServiceCollectionExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddPostgreSqlDb(configuration);
-        
+        services.AddMemoryCache();
         return services;
     }
 
@@ -39,7 +39,6 @@ public static class InfrastructureServiceCollectionExtensions
             new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IItemSearchRepository, ItemSearchRepository>();
         services.AddScoped<IItemSearchService, ItemSearchService>();
-        
         
         services.AddHealthChecks()
             .AddTypeActivatedCheck<DatabaseHealthCheck>("database")

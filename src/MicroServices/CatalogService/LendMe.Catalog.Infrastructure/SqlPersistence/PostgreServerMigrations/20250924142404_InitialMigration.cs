@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("Npgsql:PostgresExtension:pg_trgm", ",,")
                 .Annotation("Npgsql:PostgresExtension:postgis", ",,");
 
             migrationBuilder.CreateTable(
@@ -52,6 +54,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Type = table.Column<string>(type: "text", nullable: false, defaultValue: "Point"),
+                    MinPrice = table.Column<double>(type: "double precision", nullable: false),
+                    MaxPrice = table.Column<double>(type: "double precision", nullable: false),
                     Longitude = table.Column<double>(type: "double precision", nullable: false),
                     Latitude = table.Column<double>(type: "double precision", nullable: false),
                     Address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
@@ -59,7 +63,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     District = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     RadiusMeters = table.Column<int>(type: "integer", nullable: false, defaultValue: 1000),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    location = table.Column<int>(type: "geography(POINT, 4326)", nullable: false),
+                    location = table.Column<Point>(type: "geography(POINT, 4326)", nullable: false),
                     terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
@@ -79,6 +83,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    IdentifyNumber = table.Column<string>(type: "text", nullable: false),
                     DailyPrice = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
                     WeeklyPrice = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: true),
                     MonthlyPrice = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: true),
@@ -202,32 +207,32 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "IX_Items_CategoryId",
                 table: "Items",
                 column: "CategoryId",
-                filter: "is_deleted = false");
+                filter: "\"IsDeleted\" = false");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_CreatedAt",
                 table: "Items",
                 column: "CreatedAt",
                 descending: new bool[0],
-                filter: "is_deleted = false");
+                filter: "\"IsDeleted\" = false");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_DailyPrice",
                 table: "Items",
                 column: "DailyPrice",
-                filter: "is_deleted = false");
+                filter: "\"IsDeleted\" = false");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_IsAvailable",
                 table: "Items",
                 column: "IsAvailable",
-                filter: "is_deleted = false");
+                filter: "\"IsDeleted\" = false");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_Status",
                 table: "Items",
                 column: "Status",
-                filter: "is_deleted = false");
+                filter: "\"IsDeleted\" = false");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Items_Title",

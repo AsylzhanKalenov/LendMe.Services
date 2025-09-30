@@ -4,6 +4,7 @@ public class Item
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
+    public string IdentifyNumber { get; set; }
     public decimal DailyPrice { get; set; }
     public decimal? WeeklyPrice { get; set; }
     public decimal? MonthlyPrice { get; set; }

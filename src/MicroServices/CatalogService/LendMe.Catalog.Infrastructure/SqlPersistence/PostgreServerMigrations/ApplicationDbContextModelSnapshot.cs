@@ -5,6 +5,7 @@ using LendMe.Catalog.Infrastructure.SqlPersistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -21,6 +22,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "pg_trgm");
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
@@ -94,6 +96,10 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)");
 
+                    b.Property<string>("IdentifyNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsAvailable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -131,20 +137,20 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId")
-                        .HasFilter("is_deleted = false");
+                        .HasFilter("\"IsDeleted\" = false");
 
                     b.HasIndex("CreatedAt")
                         .IsDescending()
-                        .HasFilter("is_deleted = false");
+                        .HasFilter("\"IsDeleted\" = false");
 
                     b.HasIndex("DailyPrice")
-                        .HasFilter("is_deleted = false");
+                        .HasFilter("\"IsDeleted\" = false");
 
                     b.HasIndex("IsAvailable")
-                        .HasFilter("is_deleted = false");
+                        .HasFilter("\"IsDeleted\" = false");
 
                     b.HasIndex("Status")
-                        .HasFilter("is_deleted = false");
+                        .HasFilter("\"IsDeleted\" = false");
 
                     b.HasIndex("Title");
 
@@ -249,7 +255,14 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<double>("Longitude")
                         .HasColumnType("double precision");
 
-                    b.Property<int>("Points")
+                    b.Property<double>("MaxPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("MinPrice")
+                        .HasColumnType("double precision");
+
+                    b.Property<Point>("Points")
+                        .IsRequired()
                         .HasColumnType("geography(POINT, 4326)")
                         .HasColumnName("location");
 

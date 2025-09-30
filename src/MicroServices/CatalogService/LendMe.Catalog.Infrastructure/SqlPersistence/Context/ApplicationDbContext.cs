@@ -21,6 +21,8 @@ public class ApplicationDbContext: DbContext
         //modelBuilder.UseSnakeCaseNamingConvention();
 
         ConfigureCatalogEntities(modelBuilder);
+        
+        modelBuilder.HasPostgresExtension("pg_trgm");
 
         // Конфигурация Category
         modelBuilder.Entity<Category>(entity =>
@@ -60,11 +62,12 @@ public class ApplicationDbContext: DbContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Индексы
-            entity.HasIndex(e => e.CategoryId).HasFilter("is_deleted = false");
-            entity.HasIndex(e => e.DailyPrice).HasFilter("is_deleted = false");
-            entity.HasIndex(e => e.IsAvailable).HasFilter("is_deleted = false");
-            entity.HasIndex(e => e.Status).HasFilter("is_deleted = false");
-            entity.HasIndex(e => e.CreatedAt).IsDescending().HasFilter("is_deleted = false");
+            entity.HasIndex(e => e.CategoryId).HasFilter("\"IsDeleted\" = false");
+            entity.HasIndex(e => e.DailyPrice).HasFilter("\"IsDeleted\" = false");
+            entity.HasIndex(e => e.IsAvailable).HasFilter("\"IsDeleted\" = false");
+            entity.HasIndex(e => e.Status).HasFilter("\"IsDeleted\" = false");
+            entity.HasIndex(e => e.CreatedAt).IsDescending().HasFilter("\"IsDeleted\" = false");
+
             
             // Полнотекстовый поиск
             entity.HasIndex(e => e.Title)
