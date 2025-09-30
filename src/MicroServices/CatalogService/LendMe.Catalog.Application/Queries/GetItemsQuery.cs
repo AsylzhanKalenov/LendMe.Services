@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LendMe.Catalog.Application.Queries.Dto;
+using LendMe.Catalog.Core.Dto;
 using LendMe.Catalog.Core.Interfaces.Services;
 using MediatR;
 
@@ -33,12 +34,10 @@ public class GetItemsQuery : IRequest<GetItemsResponse>
             var items = await _itemSearchService.GetNearbyItemsAsync(request.Latitude, request.Longitude);
             //var totalCount = await _itemSearchService.GetTotalCountAsync(cancellationToken);
 
-            // Map to DTOs
-            var itemDtos = _mapper.Map<List<ItemDto>>(items);
 
             return new GetItemsResponse
             {
-                Items = itemDtos,
+                Items = items,
                 //TotalCount = totalCount,
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize
@@ -49,7 +48,7 @@ public class GetItemsQuery : IRequest<GetItemsResponse>
 
 public class GetItemsResponse
 {
-    public List<ItemDto> Items { get; set; }
+    public IEnumerable<ItemSearchResult> Items { get; set; }
     public int TotalCount { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }

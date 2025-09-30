@@ -31,7 +31,7 @@ public static class InfrastructureServiceCollectionExtensions
             {
                 npgsqlOptions.UseNetTopologySuite();
                 //npgsqlOptions.MigrationsAssembly("LendMe.Catalog.Infrastructure");
-            });
+            }).UseSnakeCaseNamingConvention();
         });
         
         // Add Dapper

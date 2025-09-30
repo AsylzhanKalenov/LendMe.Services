@@ -1,5 +1,6 @@
 using LendMe.Catalog.Core.Entity;
 using Microsoft.EntityFrameworkCore;
+using EFCore.NamingConventions;
 
 namespace LendMe.Catalog.Infrastructure.SqlPersistence.Context;
 
@@ -17,9 +18,6 @@ public class ApplicationDbContext: DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Используем snake_case для таблиц и колонок
-        //modelBuilder.UseSnakeCaseNamingConvention();
-
         ConfigureCatalogEntities(modelBuilder);
         
         modelBuilder.HasPostgresExtension("pg_trgm");
@@ -63,11 +61,11 @@ public class ApplicationDbContext: DbContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Индексы
-            entity.HasIndex(e => e.CategoryId).HasFilter("\"IsDeleted\" = false");
-            entity.HasIndex(e => e.DailyPrice).HasFilter("\"IsDeleted\" = false");
-            entity.HasIndex(e => e.IsAvailable).HasFilter("\"IsDeleted\" = false");
-            entity.HasIndex(e => e.Status).HasFilter("\"IsDeleted\" = false");
-            entity.HasIndex(e => e.CreatedAt).IsDescending().HasFilter("\"IsDeleted\" = false");
+            entity.HasIndex(e => e.CategoryId).HasFilter("is_deleted = false");
+            entity.HasIndex(e => e.DailyPrice).HasFilter("is_deleted = false");
+            entity.HasIndex(e => e.IsAvailable).HasFilter("is_deleted = false");
+            entity.HasIndex(e => e.Status).HasFilter("is_deleted = false");
+            entity.HasIndex(e => e.CreatedAt).IsDescending().HasFilter("is_deleted = false");
 
             
             // Полнотекстовый поиск

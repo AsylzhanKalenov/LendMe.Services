@@ -31,41 +31,52 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<int>("DisplayOrder")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("display_order");
 
                     b.Property<string>("IconUrl")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("icon_url");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("parent_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Name")
+                        .HasDatabaseName("ix_categories_name");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_categories_parent_id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("categories", (string)null);
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.Item", b =>
@@ -73,188 +84,234 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<decimal>("DailyPrice")
                         .HasPrecision(10, 2)
-                        .HasColumnType("numeric(10,2)");
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("daily_price");
 
                     b.Property<decimal?>("DepositAmount")
                         .HasPrecision(10, 2)
-                        .HasColumnType("numeric(10,2)");
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("deposit_amount");
 
                     b.Property<string>("IdentifyNumber")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("identify_number");
 
                     b.Property<bool>("IsAvailable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_available");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_deleted");
 
                     b.Property<decimal?>("MonthlyPrice")
                         .HasPrecision(10, 2)
-                        .HasColumnType("numeric(10,2)");
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("monthly_price");
 
                     b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("owner_id");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(1)
+                        .HasColumnName("status");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("title");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<decimal?>("WeeklyPrice")
                         .HasPrecision(10, 2)
-                        .HasColumnType("numeric(10,2)");
+                        .HasColumnType("numeric(10,2)")
+                        .HasColumnName("weekly_price");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_items");
 
                     b.HasIndex("CategoryId")
-                        .HasFilter("\"IsDeleted\" = false");
+                        .HasDatabaseName("ix_items_category_id")
+                        .HasFilter("is_deleted = false");
 
                     b.HasIndex("CreatedAt")
                         .IsDescending()
-                        .HasFilter("\"IsDeleted\" = false");
+                        .HasDatabaseName("ix_items_created_at")
+                        .HasFilter("is_deleted = false");
 
                     b.HasIndex("DailyPrice")
-                        .HasFilter("\"IsDeleted\" = false");
+                        .HasDatabaseName("ix_items_daily_price")
+                        .HasFilter("is_deleted = false");
 
                     b.HasIndex("IsAvailable")
-                        .HasFilter("\"IsDeleted\" = false");
+                        .HasDatabaseName("ix_items_is_available")
+                        .HasFilter("is_deleted = false");
 
                     b.HasIndex("Status")
-                        .HasFilter("\"IsDeleted\" = false");
+                        .HasDatabaseName("ix_items_status")
+                        .HasFilter("is_deleted = false");
 
-                    b.HasIndex("Title");
+                    b.HasIndex("Title")
+                        .HasDatabaseName("ix_items_title");
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Title"), "gin");
                     NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Title"), new[] { "gin_trgm_ops" });
 
-                    b.ToTable("Items");
+                    b.ToTable("items", (string)null);
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.ItemDetails", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<Guid>("ItemId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("item_id");
 
                     b.PrimitiveCollection<List<string>>("Tags")
                         .IsRequired()
-                        .HasColumnType("text[]");
+                        .HasColumnType("text[]")
+                        .HasColumnName("tags");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_item_details");
 
                     b.HasIndex("ItemId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_item_details_item_id");
 
-                    b.ToTable("ItemDetails");
+                    b.ToTable("item_details", (string)null);
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.ItemImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.PrimitiveCollection<List<string>>("AiTags")
                         .IsRequired()
-                        .HasColumnType("text[]");
+                        .HasColumnType("text[]")
+                        .HasColumnName("ai_tags");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<bool>("IsPrimary")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_primary");
 
                     b.Property<Guid>("ItemDetailsId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("item_details_id");
 
                     b.Property<int>("Order")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
 
                     b.Property<string>("ThumbnailUrl")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("thumbnail_url");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("url");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_item_image");
 
-                    b.HasIndex("ItemDetailsId");
+                    b.HasIndex("ItemDetailsId")
+                        .HasDatabaseName("ix_item_image_item_details_id");
 
-                    b.ToTable("ItemImage");
+                    b.ToTable("item_image", (string)null);
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.Rent", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("address");
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("city");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("District")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("district");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("latitude");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("longitude");
 
                     b.Property<double>("MaxPrice")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("max_price");
 
                     b.Property<double>("MinPrice")
-                        .HasColumnType("double precision");
+                        .HasColumnType("double precision")
+                        .HasColumnName("min_price");
 
                     b.Property<Point>("Points")
                         .IsRequired()
@@ -264,25 +321,31 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<int>("RadiusMeters")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(1000);
+                        .HasDefaultValue(1000)
+                        .HasColumnName("radius_meters");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text")
-                        .HasDefaultValue("Point");
+                        .HasDefaultValue("Point")
+                        .HasColumnName("type");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_rents");
 
-                    b.HasIndex("City");
+                    b.HasIndex("City")
+                        .HasDatabaseName("ix_rents_city");
 
-                    b.HasIndex("District");
+                    b.HasIndex("District")
+                        .HasDatabaseName("ix_rents_district");
 
-                    b.HasIndex("Points");
+                    b.HasIndex("Points")
+                        .HasDatabaseName("ix_rents_location");
 
                     NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Points"), "gist");
 
-                    b.ToTable("Rent", (string)null);
+                    b.ToTable("rents", (string)null);
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.RentItems", b =>
@@ -290,27 +353,34 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
+                        .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("ItemId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("item_id");
 
                     b.Property<Guid>("RentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("rent_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_rent_items");
 
-                    b.HasIndex("RentId");
+                    b.HasIndex("RentId")
+                        .HasDatabaseName("ix_rent_items_rent_id");
 
                     b.HasIndex("ItemId", "RentId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_rent_items_item_id_rent_id");
 
-                    b.ToTable("RentItems");
+                    b.ToTable("rent_items", (string)null);
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.Category", b =>
@@ -318,7 +388,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.HasOne("LendMe.Catalog.Core.Entity.Category", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_categories_categories_parent_id");
 
                     b.Navigation("Parent");
                 });
@@ -329,7 +400,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_items_categories_category_id");
 
                     b.Navigation("Category");
                 });
@@ -340,7 +412,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .WithOne("Details")
                         .HasForeignKey("LendMe.Catalog.Core.Entity.ItemDetails", "ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_item_details_items_item_id");
                 });
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.ItemImage", b =>
@@ -349,7 +422,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .WithMany("Images")
                         .HasForeignKey("ItemDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_item_image_item_details_item_details_id");
 
                     b.Navigation("ItemDetails");
                 });
@@ -359,20 +433,24 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.OwnsOne("LendMe.Catalog.Core.Entity.RentalTerms", "Terms", b1 =>
                         {
                             b1.Property<Guid>("RentId")
-                                .HasColumnType("uuid");
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
 
                             b1.Property<string>("CancellationPolicy")
                                 .HasMaxLength(1000)
-                                .HasColumnType("character varying(1000)");
+                                .HasColumnType("character varying(1000)")
+                                .HasColumnName("terms_cancellation_policy");
 
                             b1.Property<string>("IncludedAccessories")
                                 .IsRequired()
-                                .HasColumnType("jsonb");
+                                .HasColumnType("jsonb")
+                                .HasColumnName("terms_included_accessories");
 
                             b1.Property<string>("PickupInstructions")
                                 .IsRequired()
                                 .HasMaxLength(1000)
-                                .HasColumnType("character varying(1000)");
+                                .HasColumnType("character varying(1000)")
+                                .HasColumnName("terms_pickup_instructions");
 
                             b1.Property<bool>("RequiresDeposit")
                                 .ValueGeneratedOnAdd()
@@ -393,14 +471,16 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
 
                             b1.Property<string>("UsageGuidelines")
                                 .HasMaxLength(2000)
-                                .HasColumnType("character varying(2000)");
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("terms_usage_guidelines");
 
                             b1.HasKey("RentId");
 
-                            b1.ToTable("Rent");
+                            b1.ToTable("rents");
 
                             b1.WithOwner()
-                                .HasForeignKey("RentId");
+                                .HasForeignKey("RentId")
+                                .HasConstraintName("fk_rents_rents_id");
                         });
 
                     b.Navigation("Terms")
@@ -413,13 +493,15 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_rent_items_items_item_id");
 
                     b.HasOne("LendMe.Catalog.Core.Entity.Rent", "Rent")
                         .WithMany()
                         .HasForeignKey("RentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_rent_items_rents_rent_id");
 
                     b.Navigation("Item");
 

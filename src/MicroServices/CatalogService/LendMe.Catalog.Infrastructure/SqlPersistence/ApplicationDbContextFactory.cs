@@ -16,7 +16,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
             {
                 npgsqlOptions.UseNetTopologySuite();
                 //npgsqlOptions.MigrationsAssembly("LendMe.Catalog.Infrastructure");
-            });
+            }).UseSnakeCaseNamingConvention();
             
         return new ApplicationDbContext(optionsBuilder.Options);
     }

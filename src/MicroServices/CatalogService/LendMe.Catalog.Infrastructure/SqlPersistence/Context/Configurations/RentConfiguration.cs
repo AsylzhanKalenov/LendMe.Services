@@ -9,7 +9,7 @@ public class RentConfiguration : IEntityTypeConfiguration<Rent>
 {
     public void Configure(EntityTypeBuilder<Rent> builder)
     {
-        builder.ToTable("Rent");
+        //builder.ToTable("Rent");
         
         builder.HasKey(x => x.Id);
         
@@ -56,15 +56,15 @@ public class RentConfiguration : IEntityTypeConfiguration<Rent>
         builder.OwnsOne(x => x.Terms, terms =>
         {
             terms.Property(t => t.PickupInstructions)
-                //.HasColumnName("terms_pickup_instructions")
+                .HasColumnName("terms_pickup_instructions")
                 .HasMaxLength(1000);
                 
             terms.Property(t => t.UsageGuidelines)
-                //.HasColumnName("terms_usage_guidelines")
+                .HasColumnName("terms_usage_guidelines")
                 .HasMaxLength(2000);
                 
             terms.Property(t => t.IncludedAccessories)
-                //.HasColumnName("terms_included_accessories")
+                .HasColumnName("terms_included_accessories")
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
                     v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions?)null) ?? new List<string>()
@@ -72,7 +72,7 @@ public class RentConfiguration : IEntityTypeConfiguration<Rent>
                 .HasColumnType("jsonb");
                 
             terms.Property(t => t.CancellationPolicy)
-                //.HasColumnName("terms_cancellation_policy")
+                .HasColumnName("terms_cancellation_policy")
                 .HasMaxLength(1000);
                 
             terms.Property(t => t.RequiresDeposit)
