@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Lendme.Core.Entities.Booking;
-using Lendme.Core.Entities.Catalog;
 using Lendme.Core.Entities.ProfileSQLEntities;
 using Lendme.Infrastructure.SqlPersistence.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -21,16 +20,6 @@ namespace Lendme.Infrastructure.SqlPersistence
         public DbSet<ItemHandover> ItemHandovers { get; set; }
         // TODO: Consider later
         //public DbSet<DetectedIssue> DetectedIssues { get; set; }
-
-        // Catalog Domain (Assumed entities based on typical catalog structure)
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Item> Items { get; set; }
-        public DbSet<ItemDetails> ItemsDetails { get; set; }
-        public DbSet<ItemImage> ItemImages { get; set; }
-        public DbSet<Rent> Rents { get; set; }
-        public DbSet<RentItems> RentItems { get; set; }
-        // public DbSet<Location> ItemAvailabilities { get; set; }
-        // public DbSet<RentalTerms> RentalTerms { get; set; }
         
         // Profile Domain
         public DbSet<UserProfile> UserProfiles { get; set; }
@@ -45,7 +34,6 @@ namespace Lendme.Infrastructure.SqlPersistence
 
             // Configure other entities...
             ConfigureBookingEntities(modelBuilder);
-            ConfigureCatalogEntities(modelBuilder);
             
             // Configure Profile entities
             ConfigureProfileEntities(modelBuilder);
@@ -134,15 +122,6 @@ namespace Lendme.Infrastructure.SqlPersistence
         {
             // Ваша существующая конфигурация букинга
         }
-
-        private void ConfigureCatalogEntities(ModelBuilder modelBuilder)
-        {
-            // Ваша существующая конфигурация каталога
-            modelBuilder.ApplyConfiguration(new RentConfiguration());
-            modelBuilder.ApplyConfiguration(new ItemDetailsConfiguration());
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        }
-
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

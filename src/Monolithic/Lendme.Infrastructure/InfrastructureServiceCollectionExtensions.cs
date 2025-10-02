@@ -28,8 +28,6 @@ public static class InfrastructureServiceCollectionExtensions
         
         // Регистрация репозиториев
         services.AddScoped<IReviewRepository, ReviewRepository>();
-        services.AddScoped<IItemRepository, ItemRepository>();
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBookingRepository, BookingRepository>();
         
         return services;
