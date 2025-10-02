@@ -1,4 +1,4 @@
-﻿namespace LendMe.Catalog.Application.Queries.Dto;
+﻿namespace LendMe.Catalog.Application.Dto;
 
 
 // MongoDB

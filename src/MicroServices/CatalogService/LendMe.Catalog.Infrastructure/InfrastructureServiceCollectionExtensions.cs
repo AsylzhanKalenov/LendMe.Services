@@ -39,6 +39,7 @@ public static class InfrastructureServiceCollectionExtensions
             new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection")));
         services.AddScoped<IItemSearchRepository, ItemSearchRepository>();
         services.AddScoped<IItemSearchService, ItemSearchService>();
+        services.AddScoped<IRentRepository, RentRepository>();
         
         services.AddHealthChecks()
             .AddTypeActivatedCheck<DatabaseHealthCheck>("database")

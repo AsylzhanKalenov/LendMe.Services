@@ -1,6 +1,9 @@
 ﻿using Asp.Versioning;
+using AutoMapper;
+using LendMe.Catalog.Application.Commands.Item.Create;
+using LendMe.Catalog.Application.Dto;
+using LendMe.Catalog.Application.Dto.Create;
 using LendMe.Catalog.Application.Queries;
-using LendMe.Catalog.Application.Queries.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +15,12 @@ namespace LendMe.Catalog.Web.Controllers;
 [ApiVersion("1")]
 public class ItemsController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
-    public ItemsController(IMediator mediator)
+    public ItemsController(IMapper mapper, IMediator mediator)
     {
+        _mapper = mapper;
         _mediator = mediator;
     }
     
@@ -33,6 +38,14 @@ public class ItemsController : ControllerBase
     public async Task<IActionResult> GetItems([FromQuery] GetItemsQuery query)
     {
         var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(CreateItemResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> AddItem(CreateItemDto item)
+    {
+        var result = await _mediator.Send(_mapper.Map<CreateItemCommand>(item));
         return Ok(result);
     }
 }

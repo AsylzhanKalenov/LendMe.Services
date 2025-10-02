@@ -18,9 +18,9 @@ public class RentalTerms
     
     public RentalTerms(
         string pickupInstructions,
-        string usageGuidelines,
+        string? usageGuidelines,
         List<string> includedAccessories,
-        string cancellationPolicy,
+        string? cancellationPolicy,
         bool requiresDeposit,
         bool requiresInsurance,
         List<string> restrictedUses)

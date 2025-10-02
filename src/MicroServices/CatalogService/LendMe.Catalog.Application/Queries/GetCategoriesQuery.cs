@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LendMe.Catalog.Application.Queries.Dto;
+using LendMe.Catalog.Application.Dto;
 using LendMe.Catalog.Core.Interfaces.Services;
 using MediatR;
 
