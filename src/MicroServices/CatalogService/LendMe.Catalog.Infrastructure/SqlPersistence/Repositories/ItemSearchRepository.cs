@@ -198,10 +198,10 @@ public class ItemSearchRepository: IItemSearchRepository
                     sqlBuilder.Append("created_at DESC");
                 }
                 break;
-            case SortBy.PriceAsc:
+            case SortBy.MinPriceAsc:
                 sqlBuilder.Append("daily_price ASC");
                 break;
-            case SortBy.PriceDesc:
+            case SortBy.MinPriceDesc:
                 sqlBuilder.Append("daily_price DESC");
                 break;
             case SortBy.CreatedAtDesc:
@@ -277,7 +277,7 @@ public class ItemSearchRepository: IItemSearchRepository
             Limit = limit
         });
     }
-
+    
     public async Task<IEnumerable<Category>> GetCategoriesAsync()
     {
         using var connection = new NpgsqlConnection(_connectionString);

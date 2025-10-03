@@ -5,7 +5,9 @@ public class Item
     public Guid Id { get; set; }
     public string Title { get; set; }
     public string IdentifyNumber { get; set; }
-    public decimal DailyPrice { get; set; }
+    public PriceType PriceType { get; set; } = PriceType.Daily;
+    public decimal? DailyPrice { get; set; }
+    public decimal? HourlyPrice { get; set; }
     public decimal? WeeklyPrice { get; set; }
     public decimal? MonthlyPrice { get; set; }
     public decimal? DepositAmount { get; set; }
@@ -24,7 +26,9 @@ public class Item
     public Item(
         string title,
         string identifyNumber,
-        decimal dailyPrice,
+        PriceType priceType,
+        decimal? dailyPrice,
+        decimal? hourlyPrice,
         decimal? weeklyPrice,
         decimal? monthlyPrice,
         decimal? depositAmount,
@@ -32,9 +36,11 @@ public class Item
         Guid ownerId)
     {
         Id = Guid.NewGuid();
-        IdentifyNumber = identifyNumber;
         Title = title;
+        IdentifyNumber = identifyNumber;
+        PriceType = priceType;
         DailyPrice = dailyPrice;
+        HourlyPrice = hourlyPrice;
         WeeklyPrice = weeklyPrice;
         MonthlyPrice = monthlyPrice;
         DepositAmount = depositAmount;
@@ -67,3 +73,4 @@ public class Item
 
 // Enums
 public enum ItemStatus { Draft, Active, Inactive, Blocked, UnderReview }
+public enum PriceType { Hourly, Daily, Weekly, Monthly }

@@ -8,7 +8,7 @@ namespace LendMe.Catalog.Application.Commands.Rents.Create;
 
 public class CreateRentCommand : IRequest<CreateRentResponse>
 {
-    public string Type { get; set; } = "Point";
+    public string Title { get; set; }
     public IEnumerable<Guid> ItemIds { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }
@@ -46,7 +46,6 @@ public class CreateRentCommand : IRequest<CreateRentResponse>
             var rent = new Core.Entity.Rent
             {
                 Id = Guid.NewGuid(),
-                Type = request.Type,
                 Longitude = request.Longitude,
                 Latitude = request.Latitude,
                 Address = request.Address,

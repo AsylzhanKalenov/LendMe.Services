@@ -3,7 +3,9 @@ namespace LendMe.Catalog.Core.Entity;
 public class Rent
 {
     public Guid Id { get; set; }
-    public string Type { get; set; } = "Point";
+    public Guid? CategoryId { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
     public double MinPrice { get; set; }
     public double MaxPrice { get; set; }
     public double Longitude { get; set; }
@@ -14,5 +16,6 @@ public class Rent
     public int RadiusMeters { get; set; } // Delivery radius
     public DateTimeOffset CreatedAt { get; set; }
     public NetTopologySuite.Geometries.Point Points { get; set; }
+    public Category Category { get; set; }
     public RentalTerms Terms { get; set; }
 }

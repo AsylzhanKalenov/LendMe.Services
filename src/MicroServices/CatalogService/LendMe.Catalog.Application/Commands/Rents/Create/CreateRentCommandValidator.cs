@@ -6,11 +6,11 @@ public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
 {
     public CreateRentCommandValidator()
     {
-        RuleFor(x => x.Type)
+        RuleFor(x => x.Title)
             .NotEmpty()
-            .WithMessage("Type is required")
-            .MaximumLength(50)
-            .WithMessage("Type must not exceed 50 characters");
+            .WithMessage("Title is required")
+            .MaximumLength(150)
+            .WithMessage("Type must not exceed 150 characters");
 
         RuleFor(x => x.ItemIds)
             .NotNull()

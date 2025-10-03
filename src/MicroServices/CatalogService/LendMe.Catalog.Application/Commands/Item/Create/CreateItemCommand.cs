@@ -11,7 +11,9 @@ public class CreateItemCommand : IRequest<CreateItemResponse>
 {
     public string Title { get; set; }
     public string IdentifyNumber { get; set; }
-    public decimal DailyPrice { get; set; }
+    public PriceType PriceType { get; set; } = PriceType.Daily;
+    public decimal? DailyPrice { get; set; }
+    public decimal? HourlyPrice { get; set; }
     public decimal? WeeklyPrice { get; set; }
     public decimal? MonthlyPrice { get; set; }
     public decimal? DepositAmount { get; set; }
@@ -37,7 +39,9 @@ public class CreateItemCommand : IRequest<CreateItemResponse>
             var item = new Core.Entity.Item(
                 request.Title,
                 request.IdentifyNumber,
+                request.PriceType,
                 request.DailyPrice,
+                request.HourlyPrice,
                 request.WeeklyPrice,
                 request.MonthlyPrice,
                 request.DepositAmount,

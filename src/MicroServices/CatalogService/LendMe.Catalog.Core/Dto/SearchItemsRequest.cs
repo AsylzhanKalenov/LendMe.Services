@@ -23,8 +23,10 @@ public class SearchItemsRequest
 public enum SortBy
 {
     Distance,
-    PriceAsc,
-    PriceDesc,
+    MinPriceAsc,
+    MinPriceDesc,
+    MaxPriceAsc,
+    MaxPriceDesc,
     CreatedAtDesc,
     Title
 }

@@ -79,7 +79,8 @@ public class ApplicationDbContext: DbContext
         {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
-            entity.Property(e => e.Type).HasDefaultValue("Point");
+            entity.Property(e => e.Title).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.Description).IsRequired().HasMaxLength(500);
             entity.Property(e => e.Longitude).IsRequired();
             entity.Property(e => e.Latitude).IsRequired();
             entity.Property(e => e.Address).HasMaxLength(500);
@@ -94,11 +95,12 @@ public class ApplicationDbContext: DbContext
                 .HasColumnName("location");
 
             // Пространственный индекс
-            entity.HasIndex(e => e.Points)
-                .HasMethod("gist");
-            
             entity.HasIndex(e => e.City);
             entity.HasIndex(e => e.District);
+            
+            entity.HasIndex(e => e.Title)
+                .HasMethod("gin")
+                .HasOperators("gin_trgm_ops");
         });
 
         // Конфигурация RentItems

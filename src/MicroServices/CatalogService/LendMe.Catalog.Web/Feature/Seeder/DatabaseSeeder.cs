@@ -69,9 +69,11 @@ public class DatabaseSeeder
                     new Item(
                         "iPhone 15 Pro",
                         "0001",
+                        PriceType.Daily,
                         50m,
-                        300m,
-                        1000m,
+                        null,
+                        null,
+                        null,
                         2000m,
                         Guid.Parse("11111111-1111-1111-1111-111111111111"),
                         Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
@@ -79,9 +81,11 @@ public class DatabaseSeeder
                     new Item(
                         "MacBook Pro 16\"",
                         "0002",
+                        PriceType.Daily,
                         100m,
-                        600m,
-                        2000m,
+                        null,
+                        null,
+                        null,
                         5000m,
                         Guid.Parse("11111111-1111-1111-1111-111111111111"),
                         Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
@@ -89,19 +93,23 @@ public class DatabaseSeeder
                     new Item(
                         "Горный велосипед Trek",
                         "0003",
-                        25m,
+                        PriceType.Hourly,
+                        null,
                         150m,
-                        500m,
-                        1200m,
+                        null,
+                        null,
+                        null,
                         Guid.Parse("22222222-2222-2222-2222-222222222222"),
                         Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
                     ) { Id = itemIds[2] = Guid.Parse("10000000-0000-0000-0000-000000000003") },
                     new Item(
                         "Дрель Bosch Professional",
                         "0004",
-                        20m,
-                        120m,
+                        PriceType.Weekly,
+                        null,
+                        null,
                         400m,
+                        null,
                         800m,
                         Guid.Parse("33333333-3333-3333-3333-333333333333"),
                         Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc")
@@ -109,9 +117,11 @@ public class DatabaseSeeder
                     new Item(
                         "Электросамокат Xiaomi",
                         "0005",
-                        20m,
-                        120m,
-                        400m,
+                        PriceType.Monthly,
+                        null,
+                        null,
+                        null,
+                        4000m,
                         1000m,
                         Guid.Parse("44444444-4444-4444-4444-444444444444"),
                         Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
@@ -119,29 +129,35 @@ public class DatabaseSeeder
                     new Item(
                         "Sony PlayStation 5",
                         "0006",
+                        PriceType.Daily,
                         30m,
-                        180m,
-                        600m,
-                        1500m,
+                        null,
+                        null,
+                        null,
+                        null,
                         Guid.Parse("11111111-1111-1111-1111-111111111111"),
                         Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
                     ) { Id = itemIds[5] = Guid.Parse("10000000-0000-0000-0000-000000000006") },
                     new Item(
                         "Сноуборд Burton",
                         "0007",
+                        PriceType.Hourly,
+                        null,
                         40m,
-                        240m,
-                        800m,
-                        2000m,
+                        null,
+                        null,
+                        null,
                         Guid.Parse("22222222-2222-2222-2222-222222222222"),
                         Guid.Parse("cccccccc-cccc-cccc-cccc-cccccccccccc")
                     ) { Id = itemIds[6] = Guid.Parse("10000000-0000-0000-0000-000000000007") },
                     new Item(
                         "Смокинг Hugo Boss",
                         "0008",
-                        45m,
-                        270m,
+                        PriceType.Weekly,
+                        null,
+                        null,
                         900m,
+                        null,
                         2500m,
                         Guid.Parse("55555555-5555-5555-5555-555555555555"),
                         Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
@@ -179,7 +195,8 @@ public class DatabaseSeeder
                     new Rent
                     {
                         Id = rentIds[0] = Guid.Parse("20000000-0000-0000-0000-000000000001"),
-                        Type = "Point",
+                        Title = "Test1",
+                        Description = "Test1",
                         MinPrice = 20,
                         MaxPrice = 100,
                         Longitude = 76.9286,
@@ -198,7 +215,8 @@ public class DatabaseSeeder
                     new Rent
                     {
                         Id = rentIds[1] = Guid.Parse("20000000-0000-0000-0000-000000000002"),
-                        Type = "Point",
+                        Title = "Test2",
+                        Description = "Test2",
                         MinPrice = 30,
                         MaxPrice = 200,
                         Longitude = 76.9755,
@@ -217,7 +235,8 @@ public class DatabaseSeeder
                     new Rent
                     {
                         Id = rentIds[2] = Guid.Parse("20000000-0000-0000-0000-000000000003"),
-                        Type = "Point",
+                        Title = "Test3",
+                        Description = "Test3",
                         MinPrice = 15,
                         MaxPrice = 80,
                         Longitude = 76.8547,
@@ -236,7 +255,8 @@ public class DatabaseSeeder
                     new Rent
                     {
                         Id = rentIds[3] = Guid.Parse("20000000-0000-0000-0000-000000000004"),
-                        Type = "Area",
+                        Title = "Test4",
+                        Description = "Test4",
                         MinPrice = 25,
                         MaxPrice = 150,
                         Longitude = 76.9200,
@@ -255,7 +275,8 @@ public class DatabaseSeeder
                     new Rent
                     {
                         Id = rentIds[4] = Guid.Parse("20000000-0000-0000-0000-000000000005"),
-                        Type = "Point",
+                        Title = "Test5",
+                        Description = "Test5",
                         MinPrice = 40,
                         MaxPrice = 300,
                         Longitude = 76.8900,
