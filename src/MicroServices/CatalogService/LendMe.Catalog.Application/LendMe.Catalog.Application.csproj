@@ -17,8 +17,4 @@
       <ProjectReference Include="..\LendMe.Catalog.Core\LendMe.Catalog.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Dto\Update\" />
-    </ItemGroup>
-
 </Project>

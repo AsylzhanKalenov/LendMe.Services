@@ -20,7 +20,7 @@ public class RentRepository : IRentRepository
         return rent;
     }
 
-    public async Task<Rent> UpdateAsync(Rent rent, CancellationToken cancellationToken)
+    public Rent Update(Rent rent)
     {
         _context.Rents.Update(rent);
         return rent;

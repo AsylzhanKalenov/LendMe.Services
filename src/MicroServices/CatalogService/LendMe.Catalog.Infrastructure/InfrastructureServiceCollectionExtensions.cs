@@ -37,6 +37,7 @@ public static class InfrastructureServiceCollectionExtensions
         // Add Dapper
         services.AddScoped<IDbConnection>(sp => 
             new NpgsqlConnection(configuration.GetConnectionString("DefaultConnection")));
+        services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IItemSearchRepository, ItemSearchRepository>();
         services.AddScoped<IItemSearchService, ItemSearchService>();
         services.AddScoped<IRentRepository, RentRepository>();

@@ -15,6 +15,4 @@ public class CreateItemDto
     public string Description { get; set; }
     public List<string> Tags { get; set; }
     public List<IFormFile>? Images { get; set; }
-    public CreateItemLocationDto Location { get; set; }
-    public CreateItemRentalTermsDto Terms { get; set; }
 }

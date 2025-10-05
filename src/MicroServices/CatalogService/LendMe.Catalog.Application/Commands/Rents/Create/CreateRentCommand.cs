@@ -9,6 +9,7 @@ namespace LendMe.Catalog.Application.Commands.Rents.Create;
 public class CreateRentCommand : IRequest<CreateRentResponse>
 {
     public string Title { get; set; }
+    public string Description { get; set; }
     public IEnumerable<Guid> ItemIds { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }

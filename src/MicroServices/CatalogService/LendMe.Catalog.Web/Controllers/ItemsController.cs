@@ -1,8 +1,10 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
 using LendMe.Catalog.Application.Commands.Item.Create;
+using LendMe.Catalog.Application.Commands.Item.Update;
 using LendMe.Catalog.Application.Dto;
 using LendMe.Catalog.Application.Dto.Create;
+using LendMe.Catalog.Application.Dto.Update;
 using LendMe.Catalog.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +48,17 @@ public class ItemsController : ControllerBase
     public async Task<IActionResult> AddItem(CreateItemDto item)
     {
         var result = await _mediator.Send(_mapper.Map<CreateItemCommand>(item));
+        return Ok(result);
+    }
+    
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UpdateItemResponse>> Update(
+        Guid id,
+        [FromBody] UpdateItemDto item,
+        CancellationToken cancellationToken)
+    {
+        item.Id = id;
+        var result = await _mediator.Send(_mapper.Map<UpdateItemCommand>(item), cancellationToken);
         return Ok(result);
     }
 }

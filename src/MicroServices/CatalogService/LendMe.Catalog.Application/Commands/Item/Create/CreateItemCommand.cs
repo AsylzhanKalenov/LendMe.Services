@@ -64,8 +64,9 @@ public class CreateItemCommand : IRequest<CreateItemResponse>
             return new CreateItemResponse
             {
                 Id = item.Id,
+                IdentifyNumber = item.IdentifyNumber,
                 Title = item.Title,
-                CreatedAt = item.CreatedAt
+                UpdatedAt = item.CreatedAt
             };
         }
     }

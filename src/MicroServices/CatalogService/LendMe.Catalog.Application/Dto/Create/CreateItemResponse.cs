@@ -3,6 +3,7 @@
 public class CreateItemResponse
 {
     public Guid Id { get; set; }
+    public string IdentifyNumber { get; set; }
     public string Title { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 }

@@ -2,9 +2,9 @@
 
 public class CreateRentDto
 {
-    public string Type { get; set; } = "Point";
-    public double MinPrice { get; set; }
-    public double MaxPrice { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public IEnumerable<Guid> ItemIds { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }
     public string Address { get; set; }
