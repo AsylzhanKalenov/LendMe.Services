@@ -8,6 +8,6 @@ public class BookingStatusHistory
     public BookingStatus ToStatus { get; set; }
     public string Reason { get; set; }
     public string ChangedBy { get; set; } // UserId or "System"
-    public DateTime ChangedAt { get; set; }
+    public DateTimeOffset ChangedAt { get; set; }
     public Dictionary<string, string> Metadata { get; set; }
 }

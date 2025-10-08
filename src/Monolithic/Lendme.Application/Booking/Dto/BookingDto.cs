@@ -6,19 +6,20 @@ public class BookingDto
 {
     public Guid Id { get; set; }
     public string BookingNumber { get; set; } // RENT-2024-001234
+    public Guid RentalId { get; set; }
     public Guid ItemId { get; set; }
     public Guid RenterId { get; set; }
     public Guid OwnerId { get; set; }
     
     // Dates
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime? ConfirmedAt { get; set; }
-    public DateTime? PickedUpAt { get; set; }
-    public DateTime? ReturnedAt { get; set; }
-    public DateTime? CompletedAt { get; set; }
-    public DateTime ExpiresAt { get; set; } // Для автоотмены неоплаченных
+    public DateTimeOffset StartDate { get; set; }
+    public DateTimeOffset EndDate { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? ConfirmedAt { get; set; }
+    public DateTimeOffset? PickedUpAt { get; set; }
+    public DateTimeOffset? ReturnedAt { get; set; }
+    public DateTimeOffset? CompletedAt { get; set; }
+    public DateTimeOffset ExpiresAt { get; set; } // Для автоотмены неоплаченных
     
     // Status
     public BookingStatus Status { get; set; }

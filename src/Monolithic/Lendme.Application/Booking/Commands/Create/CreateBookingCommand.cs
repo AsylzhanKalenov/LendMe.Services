@@ -6,6 +6,7 @@ namespace Lendme.Application.Booking.Commands.Create;
 
 public class CreateBookingCommand : IRequest<CreateBookingResponse>
 {
+    public Guid RentId { get; set; }
     public Guid ItemId { get; set; }
     public Guid RenterId { get; set; }
     public Guid OwnerId { get; set; }
@@ -25,11 +26,12 @@ public class CreateBookingCommand : IRequest<CreateBookingResponse>
             {
                 // TODO: Consider booking number format and generation
                 BookingNumber = Guid.NewGuid().ToString(),
+                RentalId = request.RentId,
                 ItemId = request.ItemId,
                 RenterId = request.RenterId,
                 OwnerId = request.OwnerId,
                 CreatedAt = DateTime.UtcNow,
-                Status = Core.Entities.Booking.BookingStatus.Pending
+                Status = Core.Entities.Booking.BookingStatus.HOLD_PENDING
             }, cancellationToken);
 
             

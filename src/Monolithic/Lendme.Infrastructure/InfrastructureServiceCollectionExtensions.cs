@@ -8,6 +8,7 @@ using Lendme.Infrastructure.Services;
 using Lendme.Infrastructure.SqlPersistence;
 using Lendme.Infrastructure.SqlPersistence.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -26,9 +27,22 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddMongoDb(configuration);
         services.AddPostgreSqlDb(configuration);
         
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis"); // "redis:6379"
+            options.InstanceName = "lendme:"; // необязательно
+        });
+        
         // Регистрация репозиториев
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IBookingRepository, BookingRepository>();
+        services.Decorate<IBookingRepository, BookingRepositoryCached>();
+        // services.AddScoped<IBookingRepository>(sp =>
+        // {
+        //     var inner = sp.GetRequiredService<BookingRepository>();          // базовая реализация
+        //     var cache = sp.GetRequiredService<IDistributedCache>();            // Redis-кэш
+        //     return new BookingRepositoryCached(inner, cache);                  // декоратор
+        // });
         
         return services;
     }

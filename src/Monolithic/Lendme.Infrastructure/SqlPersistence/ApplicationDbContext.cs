@@ -121,6 +121,7 @@ namespace Lendme.Infrastructure.SqlPersistence
         private void ConfigureBookingEntities(ModelBuilder modelBuilder)
         {
             // Ваша существующая конфигурация букинга
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
         
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

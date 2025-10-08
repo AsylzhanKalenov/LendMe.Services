@@ -4,6 +4,7 @@ public class Booking
 {
     public Guid Id { get; set; }
     public string BookingNumber { get; set; } // RENT-2024-001234
+    public Guid RentalId { get; set; }
     public Guid ItemId { get; set; }
     public Guid RenterId { get; set; }
     public Guid OwnerId { get; set; }
@@ -39,17 +40,29 @@ public class Booking
 
     public void Confirm()
     {
-        Status = BookingStatus.Confirmed;
+        Status = BookingStatus.AWAIT_OWNER_CONFIRMATION;
+        ConfirmedAt = DateTimeOffset.UtcNow;
+    }
+    public void ChangeStatus(BookingStatus status)
+    {
+        Status = status;
         ConfirmedAt = DateTimeOffset.UtcNow;
     }
 }
 
 // Enums
-public enum BookingStatus 
+public enum BookingStatus1 
 { 
     Pending, Confirmed, Cancelled, 
     InProgress, Completed, Disputed,
     Expired, Rejected
+}
+
+public enum BookingStatus 
+{ 
+    DRAFT, HOLD_PENDING, AWAIT_OWNER_CONFIRMATION, RECEIPT_UPLOADED, 
+    CONFIRMED_READY, CONFIRMED_RENTER, IN_RENTAL, RETURN_PENDING, COMPLETED, DISPUTE_OPEN, 
+    DISPUTE_RESOLVED, CANCELLED_BY_RENTER, CANCELLED_BY_OWNER, EXPIRED_HOLD 
 }
 
 public enum CancellationType

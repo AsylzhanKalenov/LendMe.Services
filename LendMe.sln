@@ -13,6 +13,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dev", "dev", "{A7565D6C-D5A7-4F00-B869-4AAA71A8838E}"
 	ProjectSection(SolutionItems) = preProject
 		dev\docker-compose.dev.yml = dev\docker-compose.dev.yml
+		dev\docker-compose.db-brokers.yml = dev\docker-compose.db-brokers.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroServices", "MicroServices", "{1193FE71-AAAE-424A-A690-4108EA1157DA}"

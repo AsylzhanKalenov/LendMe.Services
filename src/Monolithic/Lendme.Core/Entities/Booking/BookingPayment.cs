@@ -15,9 +15,9 @@ public class BookingPayment
     public string PaymentProvider { get; set; } // Stripe, PayPal, LocalBank
     
     // Timestamps
-    public DateTime CreatedAt { get; set; }
-    public DateTime? ProcessedAt { get; set; }
-    public DateTime? FailedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset? ProcessedAt { get; set; }
+    public DateTimeOffset? FailedAt { get; set; }
     
     // Details
     public string FailureReason { get; set; }

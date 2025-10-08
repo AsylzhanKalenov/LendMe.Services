@@ -47,10 +47,46 @@ public class BookingController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("ConfirmBooking")]
-    public async Task<ActionResult<ConfirmBookingResponse>> ConfirmBooking(string id, CancellationToken cancellationToken)
+    [HttpPost("UploadReceipt")]
+    public async Task<ActionResult<UploadReceiptResponse>> UploadReceipt(string id, CancellationToken cancellationToken)
     {
-        return Ok(await _mediator.Send(new ConfirmBookingCommand()
+        return Ok(await _mediator.Send(new UploadReceiptCommand()
+        {
+            BookingId = Guid.Parse(id)
+        }, cancellationToken));
+    }
+    
+    [HttpPost("ConfirmOwner")]
+    public async Task<ActionResult<ConfirmOwnerResponse>> ConfirmOwner(string id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new ConfirmOwnerCommand()
+        {
+            BookingId = Guid.Parse(id)
+        }, cancellationToken));
+    }
+    
+    [HttpPost("ConfirmRenter")]
+    public async Task<ActionResult<ConfirmRenterResponse>> ConfirmRenter(string id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new ConfirmRenterCommand()
+        {
+            BookingId = Guid.Parse(id)
+        }, cancellationToken));
+    }
+    
+    [HttpPost("RenterReturnItem")]
+    public async Task<ActionResult<RenterReturnItemResponse>> RenterReturnItem(string id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new RenterReturnItemCommand()
+        {
+            BookingId = Guid.Parse(id)
+        }, cancellationToken));
+    }
+    
+    [HttpPost("OwnerReturnItemConfirm")]
+    public async Task<ActionResult<OwnerReturnItemConfirmResponse>> OwnerReturnItemConfirm(string id, CancellationToken cancellationToken)
+    {
+        return Ok(await _mediator.Send(new OwnerReturnItemConfirmCommand()
         {
             BookingId = Guid.Parse(id)
         }, cancellationToken));

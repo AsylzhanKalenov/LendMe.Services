@@ -5,12 +5,11 @@ using MediatR;
 
 namespace Lendme.Application.Booking.Commands.Update;
 
-
-public class ConfirmRenterCommand : IRequest<ConfirmRenterResponse>
+public class OwnerReturnItemConfirmCommand : IRequest<OwnerReturnItemConfirmResponse>
 {
     public Guid BookingId { get; set; }
 
-    public class Handler : IRequestHandler<ConfirmRenterCommand, ConfirmRenterResponse>
+    public class Handler : IRequestHandler<OwnerReturnItemConfirmCommand, OwnerReturnItemConfirmResponse>
     {
         private readonly IBookingRepository _bookingRepository;
 
@@ -19,20 +18,20 @@ public class ConfirmRenterCommand : IRequest<ConfirmRenterResponse>
             _bookingRepository = bookingRepository;
         }
         
-        public async Task<ConfirmRenterResponse> Handle(ConfirmRenterCommand request, CancellationToken cancellationToken)
+        public async Task<OwnerReturnItemConfirmResponse> Handle(OwnerReturnItemConfirmCommand request, CancellationToken cancellationToken)
         {
             var booking = await _bookingRepository.GetBookingByIdAsync(request.BookingId, cancellationToken);
         
-            if (booking.Status != BookingStatus.CONFIRMED_READY)
+            if (booking.Status != BookingStatus.RETURN_PENDING)
                 throw new InvalidOperationException("Можно подтвердить только ожидающее бронирование");
             
-            booking.ChangeStatus(BookingStatus.IN_RENTAL);
+            booking.ChangeStatus(BookingStatus.COMPLETED);
             await _bookingRepository.UpdateBookingAsync(booking, cancellationToken);
             await _bookingRepository.SaveChangesAsync(cancellationToken);
             
             // TODO: Notification to renter
             
-            return new ConfirmRenterResponse
+            return new OwnerReturnItemConfirmResponse
             {
                 Id = booking.Id,
                 BookingNumber = booking.BookingNumber,

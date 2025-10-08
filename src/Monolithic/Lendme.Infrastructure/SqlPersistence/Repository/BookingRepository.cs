@@ -45,7 +45,7 @@ public class BookingRepository : IBookingRepository
             throw new Exception($"Booking with ID {bookingId} not found");
         }
 
-        if (booking.Status == BookingStatus.InProgress || booking.Status == BookingStatus.Confirmed)
+        if (booking.Status == BookingStatus.CANCELLED_BY_OWNER || booking.Status == BookingStatus.CANCELLED_BY_RENTER)
         {
             throw new InvalidOperationException("Cannot delete active or confirmed booking. Cancel it first.");
         }

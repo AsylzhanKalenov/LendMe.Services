@@ -62,53 +62,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    ParentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    IconUrl = table.Column<string>(type: "text", nullable: true),
-                    DisplayOrder = table.Column<int>(type: "integer", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_Categories_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rent",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    location_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false, defaultValue: "Point"),
-                    location_longitude = table.Column<double>(type: "double precision", precision: 18, scale: 6, nullable: false),
-                    location_latitude = table.Column<double>(type: "double precision", precision: 18, scale: 6, nullable: false),
-                    location_address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    location_city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    location_district = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    location_radius_meters = table.Column<int>(type: "integer", nullable: false),
-                    terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
-                    terms_cancellation_policy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false),
-                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false),
-                    terms_restricted_uses = table.Column<string>(type: "jsonb", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rent", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserProfiles",
                 columns: table => new
                 {
@@ -250,37 +203,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    DailyPrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    WeeklyPrice = table.Column<decimal>(type: "numeric", nullable: true),
-                    MonthlyPrice = table.Column<decimal>(type: "numeric", nullable: true),
-                    DepositAmount = table.Column<decimal>(type: "numeric", nullable: true),
-                    Longitude = table.Column<double>(type: "double precision", nullable: false),
-                    Latitude = table.Column<double>(type: "double precision", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserAddresses",
                 columns: table => new
                 {
@@ -406,102 +328,10 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ItemDetails",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    Tags = table.Column<string>(type: "jsonb", nullable: false),
-                    ItemId1 = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ItemDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ItemDetails_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ItemDetails_Items_ItemId1",
-                        column: x => x.ItemId1,
-                        principalTable: "Items",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RentItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ItemId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RentId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RentItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RentItems_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RentItems_Rent_RentId",
-                        column: x => x.RentId,
-                        principalTable: "Rent",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ItemImages",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ItemDetailsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Url = table.Column<string>(type: "text", nullable: false),
-                    ThumbnailUrl = table.Column<string>(type: "text", nullable: false),
-                    IsPrimary = table.Column<bool>(type: "boolean", nullable: false),
-                    Order = table.Column<int>(type: "integer", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    AiTags = table.Column<List<string>>(type: "text[]", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ItemImages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ItemImages_ItemDetails_ItemDetailsId",
-                        column: x => x.ItemDetailsId,
-                        principalTable: "ItemDetails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_BookingPayments_BookingId",
                 table: "BookingPayments",
                 column: "BookingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_ParentId",
-                table: "Categories",
-                column: "ParentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemDetails_ItemId",
-                table: "ItemDetails",
-                column: "ItemId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemDetails_ItemId1",
-                table: "ItemDetails",
-                column: "ItemId1",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemHandovers_BookingId",
@@ -517,31 +347,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "IX_ItemHandovers_Type_Status",
                 table: "ItemHandovers",
                 columns: new[] { "Type", "Status" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemImages_ItemDetailsId",
-                table: "ItemImages",
-                column: "ItemDetailsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_CategoryId",
-                table: "Items",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemDetails_Location_Coordinates",
-                table: "Rent",
-                columns: new[] { "location_latitude", "location_longitude" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RentItems_ItemId",
-                table: "RentItems",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RentItems_RentId",
-                table: "RentItems",
-                column: "RentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserAddresses_ProfileId",
@@ -582,12 +387,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "ItemHandovers");
 
             migrationBuilder.DropTable(
-                name: "ItemImages");
-
-            migrationBuilder.DropTable(
-                name: "RentItems");
-
-            migrationBuilder.DropTable(
                 name: "UserAddresses");
 
             migrationBuilder.DropTable(
@@ -603,19 +402,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 name: "Bookings");
 
             migrationBuilder.DropTable(
-                name: "ItemDetails");
-
-            migrationBuilder.DropTable(
-                name: "Rent");
-
-            migrationBuilder.DropTable(
                 name: "UserProfiles");
-
-            migrationBuilder.DropTable(
-                name: "Items");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
         }
     }
 }
