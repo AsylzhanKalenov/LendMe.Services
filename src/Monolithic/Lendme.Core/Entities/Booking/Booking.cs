@@ -46,7 +46,37 @@ public class Booking
     public void ChangeStatus(BookingStatus status)
     {
         Status = status;
-        ConfirmedAt = DateTimeOffset.UtcNow;
+        switch (status)
+        {
+            case BookingStatus.AWAIT_OWNER_CONFIRMATION:
+            case BookingStatus.CONFIRMED_READY:
+            case BookingStatus.CONFIRMED_RENTER:
+                ConfirmedAt = DateTimeOffset.UtcNow;
+                break;
+
+            case BookingStatus.IN_RENTAL:
+            case BookingStatus.RECEIPT_UPLOADED:
+                PickedUpAt = DateTimeOffset.UtcNow;
+                break;
+
+            case BookingStatus.RETURN_PENDING:
+                ReturnedAt = DateTimeOffset.UtcNow;
+                break;
+
+            case BookingStatus.COMPLETED:
+                CompletedAt = DateTimeOffset.UtcNow;
+                break;
+
+            case BookingStatus.CANCELLED_BY_RENTER:
+            case BookingStatus.CANCELLED_BY_OWNER:
+            case BookingStatus.EXPIRED_HOLD:
+                DeletedAt = DateTimeOffset.UtcNow;
+                break;
+
+            default:
+                // Для статусов без меток времени ничего не делаем
+                break;
+        }
     }
 }
 
