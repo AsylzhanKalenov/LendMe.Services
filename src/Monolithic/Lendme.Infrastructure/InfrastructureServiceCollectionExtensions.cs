@@ -1,10 +1,12 @@
-﻿using Lendme.Core.Interfaces;
+﻿using Lendme.Application.Notification.Interface;
+using Lendme.Core.Interfaces;
 using Lendme.Core.Interfaces.Repositories;
 using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 using Lendme.Core.Interfaces.Services.ChatServices;
 using Lendme.Infrastructure.Implementations;
 using Lendme.Infrastructure.MongoPersistence;
 using Lendme.Infrastructure.Services;
+using Lendme.Infrastructure.Services.KafkaService;
 using Lendme.Infrastructure.SqlPersistence;
 using Lendme.Infrastructure.SqlPersistence.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,10 @@ public static class InfrastructureServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        // Kafka Services
+        services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
+        services.AddHostedService<KafkaConsumerService>();
+        
         // Chat services
         services.AddScoped<IChatService, MongoDbChatService>();
         services.AddScoped<IChatNotificationService, ChatNotificationService>();

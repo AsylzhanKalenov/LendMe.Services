@@ -1,4 +1,5 @@
 ﻿using Lendme.Application.Booking.Dto.Response;
+using Lendme.Application.Notification.Dto;
 using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 using MediatR;
 
@@ -14,10 +15,12 @@ public class CreateBookingCommand : IRequest<CreateBookingResponse>
     public class Hanlder : IRequestHandler<CreateBookingCommand, CreateBookingResponse>
     {
         private readonly IBookingRepository _bookingRepository;
+        private readonly IPublisher _publisher;
 
-        public Hanlder(IBookingRepository bookingRepository)
+        public Hanlder(IBookingRepository bookingRepository, IPublisher publisher)
         {
             _bookingRepository = bookingRepository;
+            _publisher = publisher;
         }
         
         public async Task<CreateBookingResponse> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -33,9 +36,19 @@ public class CreateBookingCommand : IRequest<CreateBookingResponse>
                 CreatedAt = DateTime.UtcNow,
                 Status = Core.Entities.Booking.BookingStatus.HOLD_PENDING
             }, cancellationToken);
-
             
-            // TODO: Notification to owner
+            var bookingCreatedEvent = new BookingCreatedEvent
+            {
+                BookingId = booking.Id,
+                BookingNumber = booking.BookingNumber,
+                RentId = request.RentId,
+                ItemId = request.ItemId,
+                RenterId = request.RenterId,
+                OwnerId = request.OwnerId,
+                CreatedAt = booking.CreatedAt
+            };
+
+            await _publisher.Publish(bookingCreatedEvent, cancellationToken);
 
             return new CreateBookingResponse
             {

@@ -13,32 +13,62 @@ public class NotificationService : INotificationService
 
     public async Task NotifyBookingChange(string deviceToken, Booking booking)
     {
-        // 1. Отправить через SignalR (мгновенно для активных пользователей)
-        await _signalR.Clients.All.SendAsync("ProductChanged", booking.BookingNumber, booking.Status);
+        // Определяем получателей уведомления (владелец и арендатор)
+        var recipientIds = new[] { booking.OwnerId, booking.RenterId };
 
-        // 2. Отправить push (для неактивных пользователей)
-        await SendProductStatusNotification(deviceToken, booking.BookingNumber, booking.Status);
+        foreach (var userId in recipientIds)
+        {
+            // Проверяем, подключен ли пользователь к SignalR
+            if (NotificationHub.IsUserConnected(userId))
+            {
+                // Пользователь онлайн - отправляем только через SignalR
+                var connectionIds = NotificationHub.GetUserConnectionIds(userId);
+                await _signalR.Clients.Clients(connectionIds.ToList())
+                    .SendAsync("BookingStatusChanged", booking.BookingNumber, booking.Status);
+            }
+            else
+            {
+                // Пользователь офлайн - отправляем push через FCM
+                await SendProductStatusNotification(deviceToken, booking.BookingNumber, booking.Status);
+            }
+        }
+    }
+
+    public async Task NotifyUserBookingChange(Guid userId, string deviceToken, Booking booking)
+    {
+        if (NotificationHub.IsUserConnected(userId))
+        {
+            // Отправляем только через SignalR
+            var connectionIds = NotificationHub.GetUserConnectionIds(userId);
+            await _signalR.Clients.Clients(connectionIds.ToList())
+                .SendAsync("BookingStatusChanged", booking.BookingNumber, booking.Status);
+        }
+        else
+        {
+            // Отправляем только через FCM
+            await SendProductStatusNotification(deviceToken, booking.BookingNumber, booking.Status);
+        }
     }
     
-    private async Task SendProductStatusNotification(string deviceToken, string productId, BookingStatus newStatus)
+    private async Task SendProductStatusNotification(string deviceToken, string bookingNumber, BookingStatus newStatus)
     {
         var message = new Message()
         {
             Token = deviceToken,
             Notification = new Notification
             {
-                Title = "Статус товара изменен",
-                Body = $"Товар #{productId} теперь: {newStatus}"
+                Title = "Статус брони изменен",
+                Body = $"Бронь #{bookingNumber} теперь: {GetStatusDisplayName(newStatus)}"
             },
             Data = new Dictionary<string, string>()
             {
-                { "productId", productId },
+                { "bookingNumber", bookingNumber },
                 { "status", newStatus.ToString() },
-                { "type", "status_change" }
+                { "type", "booking_status_change" }
             }
         };
 
-        string response = await FirebaseMessaging.DefaultInstance.SendAsync(message);
+        await FirebaseMessaging.DefaultInstance.SendAsync(message);
     }
     private async Task SendFCMNotification(List<string> deviceTokens, string productId, string newStatus)
     {
@@ -98,5 +128,19 @@ public class NotificationService : INotificationService
                 }
             }
         }
+    }
+    
+    private string GetStatusDisplayName(BookingStatus status)
+    {
+        return status switch
+        {
+            BookingStatus.AWAIT_OWNER_CONFIRMATION => "Ожидает подтверждения владельца",
+            BookingStatus.CONFIRMED_READY => "Подтверждена",
+            BookingStatus.IN_RENTAL => "В аренде",
+            BookingStatus.COMPLETED => "Завершена",
+            BookingStatus.CANCELLED_BY_RENTER => "Отменена арендатором",
+            BookingStatus.CANCELLED_BY_OWNER => "Отменена владельцем",
+            _ => status.ToString()
+        };
     }
 }
