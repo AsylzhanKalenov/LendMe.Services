@@ -15,7 +15,7 @@ public sealed record UpdateRentCommand(
     string? City,
     string? District,
     int? RadiusMeters,
-    RentalTerms? Terms
+    UpdateRentalTermsDto? Terms
 ) : IRequest<UpdateRentResponse>;
 
 public sealed class UpdateRentCommandHandler(IRentRepository repository)
@@ -37,7 +37,7 @@ public sealed class UpdateRentCommandHandler(IRentRepository repository)
             request.City,
             request.District,
             request.RadiusMeters);
-        rent.ReplaceTerms(request.Terms);
+        rent.ReplaceTerms(MapTerms(request.Terms));
 
         repository.Update(rent);
 
@@ -53,5 +53,39 @@ public sealed class UpdateRentCommandHandler(IRentRepository repository)
             City = rent.City,
             UpdatedAt = rent.UpdatedAt,
         };
+    }
+    
+    private static RentalTerms MapTerms(UpdateRentalTermsDto? dto, RentalTerms? existing = null)
+    {
+        if (dto is null)
+            return existing ?? new RentalTerms(
+                pickupInstructions: string.Empty,
+                usageGuidelines: null,
+                includedAccessories: new List<string>(),
+                cancellationPolicy: null,
+                requiresDeposit: false,
+                requiresInsurance: false,
+                restrictedUses: new List<string>());
+
+        // Если есть существующий объект, обновляем его поля.
+        var target = existing ?? new RentalTerms(
+            pickupInstructions: dto.PickupInstructions ?? string.Empty,
+            usageGuidelines: dto.UsageGuidelines,
+            includedAccessories: dto.IncludedAccessories ?? new List<string>(),
+            cancellationPolicy: dto.CancellationPolicy,
+            requiresDeposit: dto.RequiresDeposit,
+            requiresInsurance: dto.RequiresInsurance,
+            restrictedUses: dto.RestrictedUses ?? new List<string>());
+
+        // Присваивания (обновление значений)
+        target.PickupInstructions = dto.PickupInstructions ?? string.Empty;
+        target.UsageGuidelines = dto.UsageGuidelines;
+        target.IncludedAccessories = (dto.IncludedAccessories ?? new List<string>()).ToList();
+        target.CancellationPolicy = dto.CancellationPolicy;
+        target.RequiresDeposit = dto.RequiresDeposit;
+        target.RequiresInsurance = dto.RequiresInsurance;
+        target.RestrictedUses = (dto.RestrictedUses ?? new List<string>()).ToList();
+
+        return target;
     }
 }

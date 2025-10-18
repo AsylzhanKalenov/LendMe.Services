@@ -42,42 +42,15 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "rents",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    type = table.Column<string>(type: "text", nullable: false, defaultValue: "Point"),
-                    min_price = table.Column<double>(type: "double precision", nullable: false),
-                    max_price = table.Column<double>(type: "double precision", nullable: false),
-                    longitude = table.Column<double>(type: "double precision", nullable: false),
-                    latitude = table.Column<double>(type: "double precision", nullable: false),
-                    address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    district = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    radius_meters = table.Column<int>(type: "integer", nullable: false, defaultValue: 1000),
-                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
-                    location = table.Column<Point>(type: "geography(POINT, 4326)", nullable: false),
-                    terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
-                    terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
-                    terms_cancellation_policy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
-                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
-                    terms_restricted_uses = table.Column<string>(type: "jsonb", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_rents", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "items",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     identify_number = table.Column<string>(type: "text", nullable: false),
-                    daily_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: false),
+                    price_type = table.Column<int>(type: "integer", nullable: false),
+                    daily_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: true),
+                    hourly_price = table.Column<decimal>(type: "numeric", nullable: true),
                     weekly_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: true),
                     monthly_price = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: true),
                     deposit_amount = table.Column<decimal>(type: "numeric(10,2)", precision: 10, scale: 2, nullable: true),
@@ -98,6 +71,43 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         principalTable: "categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "rents",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    category_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    title = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    min_price = table.Column<double>(type: "double precision", nullable: false),
+                    max_price = table.Column<double>(type: "double precision", nullable: false),
+                    longitude = table.Column<double>(type: "double precision", nullable: false),
+                    latitude = table.Column<double>(type: "double precision", nullable: false),
+                    address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    city = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    district = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    radius_meters = table.Column<int>(type: "integer", nullable: false, defaultValue: 1000),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    updated_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    location = table.Column<Point>(type: "geography(POINT, 4326)", nullable: false),
+                    terms_pickup_instructions = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    terms_usage_guidelines = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: true),
+                    terms_included_accessories = table.Column<string>(type: "jsonb", nullable: false),
+                    terms_cancellation_policy = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    terms_requires_deposit = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    terms_requires_insurance = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    terms_restricted_uses = table.Column<string>(type: "jsonb", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_rents", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_rents_categories_category_id",
+                        column: x => x.category_id,
+                        principalTable: "categories",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -241,6 +251,11 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 column: "rent_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_rents_category_id",
+                table: "rents",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_rents_city",
                 table: "rents",
                 column: "city");
@@ -251,10 +266,11 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                 column: "district");
 
             migrationBuilder.CreateIndex(
-                name: "ix_rents_location",
+                name: "ix_rents_title",
                 table: "rents",
-                column: "location")
-                .Annotation("Npgsql:IndexMethod", "gist");
+                column: "title")
+                .Annotation("Npgsql:IndexMethod", "gin")
+                .Annotation("Npgsql:IndexOperators", new[] { "gin_trgm_ops" });
         }
 
         /// <inheritdoc />

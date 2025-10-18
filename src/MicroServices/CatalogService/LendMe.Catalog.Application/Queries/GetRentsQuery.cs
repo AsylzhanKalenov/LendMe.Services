@@ -14,30 +14,24 @@ public class GetRentsQuery : IRequest<GetRentsResponse>
     
     public class Handler : IRequestHandler<GetRentsQuery, GetRentsResponse>
     {
-        private readonly IItemSearchService _itemSearchService;
+        private readonly IRentSearchService _rentSearchService;
         private readonly IMapper _mapper;
 
         public Handler(
-            IItemSearchService itemSearchService,
+            IRentSearchService rentSearchService,
             IMapper mapper)
         {
-            _itemSearchService = itemSearchService;
+            _rentSearchService = rentSearchService;
             _mapper = mapper;
         }
 
         public async Task<GetRentsResponse> Handle(GetRentsQuery request, CancellationToken cancellationToken)
         {
-            var skip = (request.PageNumber - 1) * request.PageSize;
-        
-            // Get items with details from PostgreSQL
-            var rents = await _itemSearchService.GetNearbyRentsAsync(request.Latitude, request.Longitude);
-            //var totalCount = await _itemSearchService.GetTotalCountAsync(cancellationToken);
-
-
+            var rents = await _rentSearchService.GetNearbyRentsAsync(request.Latitude, request.Longitude);
+         
             return new GetRentsResponse
             {
                 Rents = rents,
-                //TotalCount = totalCount,
                 PageNumber = request.PageNumber,
                 PageSize = request.PageSize
             };

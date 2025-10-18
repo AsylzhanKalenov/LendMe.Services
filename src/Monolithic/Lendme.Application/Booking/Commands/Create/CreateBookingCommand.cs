@@ -29,7 +29,7 @@ public class CreateBookingCommand : IRequest<CreateBookingResponse>
             {
                 // TODO: Consider booking number format and generation
                 BookingNumber = Guid.NewGuid().ToString(),
-                RentalId = request.RentId,
+                RentId = request.RentId,
                 ItemId = request.ItemId,
                 RenterId = request.RenterId,
                 OwnerId = request.OwnerId,

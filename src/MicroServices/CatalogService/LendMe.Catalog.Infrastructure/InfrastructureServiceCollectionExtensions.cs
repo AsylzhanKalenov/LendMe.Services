@@ -41,6 +41,8 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddScoped<IItemSearchRepository, ItemSearchRepository>();
         services.AddScoped<IItemSearchService, ItemSearchService>();
         services.AddScoped<IRentRepository, RentRepository>();
+        services.AddScoped<IRentSearchRepository, RentSearchRepository>();
+        services.AddScoped<IRentSearchService, RentSearchService>();
         
         services.AddHealthChecks()
             .AddTypeActivatedCheck<DatabaseHealthCheck>("database")

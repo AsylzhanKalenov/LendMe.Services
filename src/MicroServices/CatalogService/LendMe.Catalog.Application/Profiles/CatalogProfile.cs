@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using LendMe.Catalog.Application.Commands.Item.Create;
+using LendMe.Catalog.Application.Commands.Item.Update;
 using LendMe.Catalog.Application.Commands.Rents.Create;
+using LendMe.Catalog.Application.Commands.Rents.Update;
 using LendMe.Catalog.Application.Dto;
 using LendMe.Catalog.Application.Dto.Create;
+using LendMe.Catalog.Application.Dto.Update;
 using LendMe.Catalog.Core.Entity;
 
 namespace LendMe.Catalog.Application.Profiles;
@@ -15,6 +18,9 @@ public class CatalogProfile : Profile
         
         CreateMap<CreateItemDto, CreateItemCommand>();
         CreateMap<CreateRentDto, CreateRentCommand>();
+        
+        CreateMap<UpdateRentDto, UpdateRentCommand>();
+        CreateMap<UpdateItemDto, UpdateItemCommand>();
 
         CreateMap<Rent, RentDto>();
 

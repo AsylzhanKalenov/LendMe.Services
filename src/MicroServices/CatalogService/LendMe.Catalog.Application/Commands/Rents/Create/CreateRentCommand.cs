@@ -47,6 +47,8 @@ public class CreateRentCommand : IRequest<CreateRentResponse>
             var rent = new Core.Entity.Rent
             {
                 Id = Guid.NewGuid(),
+                Title = request.Title,
+                Description = request.Description,
                 Longitude = request.Longitude,
                 Latitude = request.Latitude,
                 Address = request.Address,

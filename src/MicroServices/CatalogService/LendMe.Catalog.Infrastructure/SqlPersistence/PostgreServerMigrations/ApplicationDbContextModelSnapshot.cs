@@ -97,7 +97,7 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<decimal>("DailyPrice")
+                    b.Property<decimal?>("DailyPrice")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("daily_price");
@@ -106,6 +106,10 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)")
                         .HasColumnName("deposit_amount");
+
+                    b.Property<decimal?>("HourlyPrice")
+                        .HasColumnType("numeric")
+                        .HasColumnName("hourly_price");
 
                     b.Property<string>("IdentifyNumber")
                         .IsRequired()
@@ -132,6 +136,10 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid")
                         .HasColumnName("owner_id");
+
+                    b.Property<int>("PriceType")
+                        .HasColumnType("integer")
+                        .HasColumnName("price_type");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -279,6 +287,10 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("address");
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -290,6 +302,12 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("description");
 
                     b.Property<string>("District")
                         .IsRequired()
@@ -324,15 +342,21 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasDefaultValue(1000)
                         .HasColumnName("radius_meters");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Title")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("text")
-                        .HasDefaultValue("Point")
-                        .HasColumnName("type");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("title");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.HasKey("Id")
                         .HasName("pk_rents");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_rents_category_id");
 
                     b.HasIndex("City")
                         .HasDatabaseName("ix_rents_city");
@@ -340,10 +364,11 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.HasIndex("District")
                         .HasDatabaseName("ix_rents_district");
 
-                    b.HasIndex("Points")
-                        .HasDatabaseName("ix_rents_location");
+                    b.HasIndex("Title")
+                        .HasDatabaseName("ix_rents_title");
 
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Points"), "gist");
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Title"), "gin");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Title"), new[] { "gin_trgm_ops" });
 
                     b.ToTable("rents", (string)null);
                 });
@@ -430,6 +455,11 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
 
             modelBuilder.Entity("LendMe.Catalog.Core.Entity.Rent", b =>
                 {
+                    b.HasOne("LendMe.Catalog.Core.Entity.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .HasConstraintName("fk_rents_categories_category_id");
+
                     b.OwnsOne("LendMe.Catalog.Core.Entity.RentalTerms", "Terms", b1 =>
                         {
                             b1.Property<Guid>("RentId")
@@ -482,6 +512,8 @@ namespace LendMe.Catalog.Infrastructure.SqlPersistence.PostgreServerMigrations
                                 .HasForeignKey("RentId")
                                 .HasConstraintName("fk_rents_rents_id");
                         });
+
+                    b.Navigation("Category");
 
                     b.Navigation("Terms")
                         .IsRequired();

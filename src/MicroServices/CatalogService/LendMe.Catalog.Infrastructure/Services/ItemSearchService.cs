@@ -82,11 +82,6 @@ public class ItemSearchService: IItemSearchService
         }
     }
 
-    public Task<IEnumerable<RentSearchResult>> GetNearbyRentsAsync(double latitude, double longitude, int radiusMeters = 5000)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<IEnumerable<ItemSearchResult>> GetRecommendedItemsAsync(Guid userId)
     {
         // Здесь можно добавить логику рекомендаций на основе истории просмотров/аренды
