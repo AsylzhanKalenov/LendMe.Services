@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Entities\MongoEntities\" />
-      <Folder Include="Interfaces\Repositories\ChatRepositories\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
       <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.7" />
       <PackageReference Include="NetTopologySuite" Version="2.6.0" />
