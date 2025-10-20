@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LendMe.Shared.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LendMe.Shared.Infrastructure", "src\MicroServices\SharedService\LendMe.Shared.Infrastructure\LendMe.Shared.Infrastructure.csproj", "{DB313EC9-25C0-4C34-84C4-435C54F09BA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LendMe.Shared.Web", "src\MicroServices\SharedService\LendMe.Shared.Web\LendMe.Shared.Web.csproj", "{1E88EAB9-FC39-4996-B9FE-FB286001F21B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{DB313EC9-25C0-4C34-84C4-435C54F09BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB313EC9-25C0-4C34-84C4-435C54F09BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB313EC9-25C0-4C34-84C4-435C54F09BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E88EAB9-FC39-4996-B9FE-FB286001F21B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E88EAB9-FC39-4996-B9FE-FB286001F21B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E88EAB9-FC39-4996-B9FE-FB286001F21B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E88EAB9-FC39-4996-B9FE-FB286001F21B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{13414C0E-6733-4EBD-AC6B-3A31FE1B9EF3} = {3A7142BE-0B2E-4182-A59E-19B5070728CC}
@@ -102,5 +108,6 @@ Global
 		{5EB1593B-9F4B-4B4F-B3B6-083EB216C0BD} = {721BAA99-E25C-456D-A1A6-64FC841CC9DD}
 		{F51A174F-6B76-4080-B156-C51EAD4F17DC} = {721BAA99-E25C-456D-A1A6-64FC841CC9DD}
 		{DB313EC9-25C0-4C34-84C4-435C54F09BA9} = {721BAA99-E25C-456D-A1A6-64FC841CC9DD}
+		{1E88EAB9-FC39-4996-B9FE-FB286001F21B} = {721BAA99-E25C-456D-A1A6-64FC841CC9DD}
 	EndGlobalSection
 EndGlobal

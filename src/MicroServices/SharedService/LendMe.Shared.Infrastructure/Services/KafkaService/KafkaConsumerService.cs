@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using Confluent.Kafka;
 using LendMe.Shared.Application.Interfaces.NotificationServices;
-using LendMe.Shared.Application.Notification.Dto;
-using LendMe.Shared.Application.Notification.Events;
+using LendMe.Shared.Application.Notifications.Dto;
+using LendMe.Shared.Application.Notifications.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

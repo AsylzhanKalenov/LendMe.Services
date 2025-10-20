@@ -15,9 +15,9 @@ namespace Lendme.Web.Controllers;
 public class BookingController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<ChatController> _logger;
+    private readonly ILogger<BookingController> _logger;
 
-    public BookingController(IMediator mediator, ILogger<ChatController> logger)
+    public BookingController(IMediator mediator, ILogger<BookingController> logger)
     {
         _mediator = mediator;
         _logger = logger;

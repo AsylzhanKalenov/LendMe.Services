@@ -1,4 +1,4 @@
-namespace Lendme.Core.Entities.NotificationService;
+namespace LendMe.Shared.Core.Entities.NotificationService;
 
 public class NotificationTemplate
 {

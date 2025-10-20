@@ -1,6 +1,6 @@
 ﻿using FirebaseAdmin.Messaging;
 using LendMe.Shared.Application.Interfaces.NotificationServices;
-using LendMe.Shared.Application.Notification.Dto;
+using LendMe.Shared.Application.Notifications.Dto;
 using LendMe.Shared.Infrastructure.Hubs;
 using Microsoft.AspNetCore.SignalR;
 

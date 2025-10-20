@@ -1,4 +1,4 @@
-﻿using LendMe.Shared.Application.Notification.Dto;
+﻿using LendMe.Shared.Application.Notifications.Dto;
 
 namespace LendMe.Shared.Application.Interfaces.NotificationServices;
 

@@ -15,12 +15,12 @@ public class ReviewRepository : IReviewRepository
         _collection = database.GetCollection<ReviewDocument>("LendmeReviews");
     }
     
-    public async Task<List<Review>> GetReviewsByItemAsync(string itemId)
+    public async Task<List<Review>> GetReviewsByItemAsync(string itemId, CancellationToken cancellationToken = default)
     {
         try
         {
             Guid.TryParse(itemId.ToString(), out var id);
-            var documents = await _collection.Find(d => d.ItemId == id).ToListAsync();
+            var documents = await _collection.Find(d => d.ItemId == id).ToListAsync(cancellationToken);
             return documents.ToEntityList();
         }
         catch (Exception e)
@@ -39,10 +39,10 @@ public class ReviewRepository : IReviewRepository
         return document?.ToEntity();
     }
 
-    public async Task<Review?> CreateReviewAsync(Review review)
+    public async Task<Review?> CreateReviewAsync(Review review, CancellationToken cancellationToken = default)
     {
         var document = review.ToDocument();
-        await _collection.InsertOneAsync(document);
+        await _collection.InsertOneAsync(document, cancellationToken);
         return document.ToEntity();
     }
 
