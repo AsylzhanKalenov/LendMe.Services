@@ -23,7 +23,7 @@ public class KafkaConsumerService : BackgroundService
     {
         var config = new ConsumerConfig
         {
-            BootstrapServers = configuration["Kafka:BootstrapServers"] ?? "localhost:9092",
+            BootstrapServers = configuration["Kafka:BootstrapServers"] ?? "localhost:9094",
             GroupId = "lendme-notification-consumer-group",
             AutoOffsetReset = AutoOffsetReset.Earliest,
             EnableAutoCommit = false,
@@ -37,7 +37,7 @@ public class KafkaConsumerService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _consumer.Subscribe("booking-created");
+        _consumer.Subscribe("booking-changed");
 
         while (!stoppingToken.IsCancellationRequested)
         {

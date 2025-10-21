@@ -39,6 +39,7 @@ public class BookingController : ControllerBase
     {
         var result = await _mediator.Send(new CreateBookingCommand()
         {
+            RentId = request.RentId,
             ItemId = request.ItemId,
             RenterId = request.RenterId,
             OwnerId = request.OwnerId

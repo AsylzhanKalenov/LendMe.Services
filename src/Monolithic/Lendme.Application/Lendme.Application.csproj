@@ -17,4 +17,8 @@
       <ProjectReference Include="..\Lendme.Core\Lendme.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Notification\Dto\" />
+    </ItemGroup>
+
 </Project>

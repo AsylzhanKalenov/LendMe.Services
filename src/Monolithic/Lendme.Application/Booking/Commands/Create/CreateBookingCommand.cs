@@ -1,5 +1,5 @@
 ﻿using Lendme.Application.Booking.Dto.Response;
-using Lendme.Application.Notification.Dto;
+using Lendme.Application.Notification.Event;
 using Lendme.Core.Interfaces.Repositories.BookingRepositories;
 using MediatR;
 
@@ -36,19 +36,8 @@ public class CreateBookingCommand : IRequest<CreateBookingResponse>
                 CreatedAt = DateTime.UtcNow,
                 Status = Core.Entities.Booking.BookingStatus.HOLD_PENDING
             }, cancellationToken);
-            
-            var bookingCreatedEvent = new BookingCreatedEvent
-            {
-                BookingId = booking.Id,
-                BookingNumber = booking.BookingNumber,
-                RentId = request.RentId,
-                ItemId = request.ItemId,
-                RenterId = request.RenterId,
-                OwnerId = request.OwnerId,
-                CreatedAt = booking.CreatedAt
-            };
 
-            await _publisher.Publish(bookingCreatedEvent, cancellationToken);
+            await _bookingRepository.SaveChangesAsync(cancellationToken);
 
             return new CreateBookingResponse
             {

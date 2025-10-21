@@ -20,7 +20,8 @@ public class BookingRepository : IBookingRepository
 
     public async Task<Booking?> GetBookingByIdAsync(Guid bookingId, CancellationToken cancellationToken)
     {
-        return await _context.Bookings.FindAsync(bookingId, cancellationToken);
+        var res = await _context.Bookings.FindAsync(bookingId, cancellationToken);
+        return res;
     }
 
     public async Task<Booking> UpdateBookingAsync(Booking booking, CancellationToken cancellationToken)

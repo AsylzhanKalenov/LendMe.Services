@@ -22,7 +22,7 @@ public class Booking
     
     // Status
     public BookingStatus Status { get; set; }
-    public string CancellationReason { get; set; }
+    public string? CancellationReason { get; set; }
     public CancellationType? CancellationType { get; set; }
     
     // Financial

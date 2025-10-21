@@ -21,6 +21,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     BookingNumber = table.Column<string>(type: "text", nullable: false),
+                    RentId = table.Column<Guid>(type: "uuid", nullable: false),
                     ItemId = table.Column<Guid>(type: "uuid", nullable: false),
                     RenterId = table.Column<Guid>(type: "uuid", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -34,7 +35,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     CompletedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     ExpiresAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CancellationReason = table.Column<string>(type: "text", nullable: false),
+                    CancellationReason = table.Column<string>(type: "text", nullable: true),
                     CancellationType = table.Column<int>(type: "integer", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -53,7 +54,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     ToStatus = table.Column<int>(type: "integer", nullable: false),
                     Reason = table.Column<string>(type: "text", nullable: false),
                     ChangedBy = table.Column<string>(type: "text", nullable: false),
-                    ChangedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ChangedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Metadata = table.Column<Dictionary<string, string>>(type: "hstore", nullable: false)
                 },
                 constraints: table =>
@@ -133,9 +134,9 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     Status = table.Column<int>(type: "integer", nullable: false),
                     ExternalPaymentId = table.Column<string>(type: "text", nullable: false),
                     PaymentProvider = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    FailedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ProcessedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    FailedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     FailureReason = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

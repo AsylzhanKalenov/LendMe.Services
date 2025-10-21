@@ -35,7 +35,6 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .HasColumnType("text");
 
                     b.Property<string>("CancellationReason")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("CancellationType")
@@ -71,6 +70,9 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<DateTimeOffset?>("PickedUpAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("RentId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("RenterId")
                         .HasColumnType("uuid");
 
@@ -100,7 +102,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid>("BookingId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Currency")
@@ -111,7 +113,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("FailedAt")
+                    b.Property<DateTimeOffset?>("FailedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FailureReason")
@@ -125,7 +127,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("ProcessedAt")
+                    b.Property<DateTimeOffset?>("ProcessedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Purpose")
@@ -150,7 +152,7 @@ namespace Lendme.Infrastructure.SqlPersistence.PostgreServerMigrations
                     b.Property<Guid>("BookingId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("ChangedAt")
+                    b.Property<DateTimeOffset>("ChangedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ChangedBy")

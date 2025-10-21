@@ -43,26 +43,37 @@ services:
     networks:
       - db-net
 
-  db_zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+  db_kafka:
+    image: confluentinc/cp-kafka:7.6.1
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      CLUSTER_ID: "Uu98-GcVsQ8IMLwh8cZurA"
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9094,CONTROLLER://:29093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://db_kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@db_kafka:29093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
     ports:
-      - "2181:2181"
+      - "9092:9092"
+      - "9094:9094"
     networks:
       - db-net
 
-  db_kafka:
-    image: confluentinc/cp-kafka:latest
+  kafka_ui:
+    image: provectuslabs/kafka-ui:latest
     depends_on:
-      - db_zookeeper
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: db_zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://db_kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      - db_kafka
     ports:
-      - "9092:9092"
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: db_kafka:9092
     networks:
       - db-net
 
